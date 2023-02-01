@@ -70,7 +70,38 @@ Packable uses the [Timeline Weather API from the Visual Crossing](https://www.vi
 #### Database Schema
 
 ![](database-schema.png)
-Database schema located in /database/schema.sql
+
+##### Database schema located in /database/schema.sql
+
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(25),
+   password TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT NOT NULL CHECK (position('@' IN email) > 1),
+);
+
+CREATE TABLE destination_lists (
+    id SERIAL PRIMARY KEY,
+    user_id int NOT NULL REFERENCES users ON DELETE CASCADE,
+    searched_address TEXT NOT NULL,
+    longitude NUMBER NOT NULL,
+    latitude NUMBER NOT NULL,
+    arrival_date DATE NOT NULL,
+    departure_date DATE NOT NULL,
+);
+
+CREATE TABLE list_items (
+    id SERIAL PRIMARY KEY,
+    user_id int NOT NULL REFERENCES users ON DELETE CASCADE,
+    list_id int NOT NULL REFERENCES destination_lists ON DELETE CASCADE,
+    category TEXT NOT NULL,
+    item TEXT NOT NULL,
+    qty int NOT NULL,
+);
+```
 
 ------
 
