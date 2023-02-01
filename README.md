@@ -69,14 +69,14 @@ Packable uses the [Timeline Weather API from the Visual Crossing](https://www.vi
 
 #### Database Schema
 
-![](backend/database-schema.png)
+![](database-schema.png)
 Database schema located in /database/schema.sql
 
 ------
 
 #### User Flow
 
-![](backend/user-flow.jpeg)
+![](user-flow.jpeg)
 
 ------
 
