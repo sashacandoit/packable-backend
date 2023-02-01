@@ -69,13 +69,14 @@ Packable uses the [Timeline Weather API from the Visual Crossing](https://www.vi
 
 #### Database Schema
 
-![](/Users/sashahome/Dropbox/Sasha/SpringBoard/Capstone-2-project/backend/database-schema.png)
+![](backend/database-schema.png)
+Database schema located in /database/schema.sql
 
 ------
 
 #### User Flow
 
-![](/Users/sashahome/Dropbox/Sasha/SpringBoard/Capstone-2-proposal/user-flow.jpeg)
+![](backend/user-flow.jpeg)
 
 ------
 
