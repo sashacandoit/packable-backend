@@ -20,8 +20,8 @@ class List {
               lists.arrival_date,
               lists.departure_date,
               list_items.category,
-              list_item.item,
-              list_item.qty
+              list_items.item,
+              list_items.qty
       FROM lists
       LEFT JOIN users ON users.id = lists.user_id
       RIGHT JOIN list_items ON list.id = lists_items.list_id
