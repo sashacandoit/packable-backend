@@ -113,9 +113,9 @@ class User {
    * all the fields; this only changes provided ones.
    *
    * Data can include:
-   *   { firstName, lastName, password, email, isAdmin }
+   *   { firstName, lastName, password, email }
    *
-   * Returns: { username, firstName, lastName, email, isAdmin }
+   * Returns: { username, firstName, lastName, email }
    *
    * Throws NotFoundError if not found.
    */
