@@ -4,6 +4,7 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
+const { NotFoundError } = require("../../../React JS/projects/react-jobly/backend/expressError");
 
 /** Related functions for users. */
 
@@ -119,14 +120,22 @@ class User {
    */
 
   static async update(username, data) {
-
     //create a new hashed password if an updated password was provided
-    if (data.password) {
-      data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
-    }
-
     
+  }
 
+  /** Delete given user from database; returns undefined. */
+  static async remove(username) {
+    let result = await db.query(
+      `DELETE
+      FROM users
+      WHERE username = $1
+      RETURNING username`,
+      [username]
+    );
+    const user = result.rows[0]
+
+    if (!user) throw new NotFoundError(`No user found with username: ${username}`)
   }
 
 }
