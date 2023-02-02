@@ -1,4 +1,0 @@
-
-const genSqlSyntax = (dataToUpdate, jsToSql) => {
-  
-}

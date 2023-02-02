@@ -2,7 +2,7 @@
 
 const db = require("../db");
 const bcrypt = require("bcrypt");
-
+const {sqlPartialUpdate} = require("../helpers/sql-partial-update")
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
 const { NotFoundError } = require("../../../React JS/projects/react-jobly/backend/expressError");
 
@@ -53,9 +53,10 @@ class User {
       [username],
     );
 
-    // if (duplicateCheck.rows[0]) {
-    //   throw new BadRequestError(`Duplicate username: ${username}`);
-    // }
+    if (duplicateCheck.rows[0]) {
+      // throw new BadRequestError(`Duplicate username: ${username}`);
+      console.log(`Duplicate username: ${username}`);
+    }
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
@@ -121,7 +122,33 @@ class User {
 
   static async update(username, data) {
     //create a new hashed password if an updated password was provided
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR)
+    };
+
+    //convert submitted data to useable syntax for request
+    const { setCols, values } = sqlPartialUpdate(
+      data,
+      {
+        email: "email",
+        first_name: "first_name",
+        last_name: "last_name"
+      });
     
+    const usernameIdx = "$" + (values.length + 1);
+
+    const sqlQuery = `UPDATE users
+                      SET ${setCols}
+                      WHERE username = ${usernameIdx}
+                      RETURNING username, first_name, last_name, email`;
+    
+    const result = await db.query(sqlQuery, [...values, username]);
+    const updatedUser = result.rows[0];
+
+    if (!updatedUser) {
+      // throw new NotFoundError(`No user found with username: ${username}`)
+      console.log(`No user found with username: ${username}`)
+    };
   }
 
   /** Delete given user from database; returns undefined. */
@@ -135,7 +162,11 @@ class User {
     );
     const user = result.rows[0]
 
-    if (!user) throw new NotFoundError(`No user found with username: ${username}`)
+    if (!user) {
+      // throw new NotFoundError(`No user found with username: ${username}`)
+      console.log(`No user found with username: ${username}`)
+    };
   }
-
 }
+
+module.exports = User;
