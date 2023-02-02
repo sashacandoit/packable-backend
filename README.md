@@ -95,7 +95,6 @@ CREATE TABLE destination_lists (
 
 CREATE TABLE list_items (
     id SERIAL PRIMARY KEY,
-    user_id int NOT NULL REFERENCES users ON DELETE CASCADE,
     list_id int NOT NULL REFERENCES destination_lists ON DELETE CASCADE,
     category TEXT NOT NULL,
     item TEXT NOT NULL,
