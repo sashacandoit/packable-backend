@@ -1,14 +1,12 @@
 "use strict";
 
 const db = require("../db");
-const bcrypt = require("bcrypt");
 const { sqlPartialUpdate } = require("../helpers/sql-partial-update")
-const { BCRYPT_WORK_FACTOR } = require("../config.js");
-const { NotFoundError } = require("../../../React JS/projects/react-jobly/backend/expressError");
+// const { NotFoundError } = require("../../../React JS/projects/react-jobly/backend/expressError");
 
 /** Related functions for destination_lists. */
 
-class Lists {
+class List {
 
   /** Find all lists by given user_id.
    * Returns [{ username, id, searched_address, arrival_date, departure_date, [items ...] }, ...]
@@ -127,5 +125,6 @@ class Lists {
       console.log(`No list found: ${list_id}`)
     };
   }
-
 }
+
+module.exports = List
