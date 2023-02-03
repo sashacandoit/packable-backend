@@ -2,10 +2,14 @@
 
 /** Express app for Capston 2 project. */
 const express = require('express');
+const authRoutes = require("./routes/auth");
+const usersRoutes = require("./routes/users");
+const { authenticateJWT } = require("./middleware/auth");
 
 const app = express();
 
 app.use(express.json());
+app.use(authenticateJWT);
 
 app.get('/', function (req, res) {
   console.log('Server is working')
@@ -14,7 +18,8 @@ app.get('/', function (req, res) {
 
 /** tells routes what to prefix with -- not set up yet */
 // app.use("/users", usersRoutes);
-
+app.use("/auth", authRoutes);
+app.use("/users", usersRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next) {
