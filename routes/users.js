@@ -5,6 +5,13 @@ const User = require("../models/user");
 const { createToken } = require("../helpers/tokens");
 const router = express.Router();
 
+/** Routes for users.
+ * Still to do:
+ * add isAdmin
+ * add jSON schema validator
+ */
+
+
 /** GET / => { users: [ {username, first_name, last_name, email }, ... ] }
  *
  * Returns list of all users.
@@ -28,6 +35,14 @@ router.get("/", async function (req, res, next) {
  *
  **/
 
+router.get("/:username", async function (req, res, next) {
+  try {
+    const user = await User.get(req.params.username);
+    return res.json({user})
+  } catch (err) {
+    return next(err)
+  }
+})
 
 
 /** POST / { user }  => { user, token }
@@ -38,6 +53,18 @@ router.get("/", async function (req, res, next) {
  *  {user: { username, first_name, last_name, email }, token }
  *
  **/
+
+router.post("/", async function (req, res, next) {
+  try {
+    // const validator = jsonschema.validate(req.body, userNewSchema);
+
+    const user = await User.register(req.body);
+    const token = createToken(user);
+    return res.status(201).json({user, token})
+  } catch (err) {
+    return next(err)
+  }
+})
 
 
 /** PATCH /[username] { user } => { user }
@@ -50,6 +77,16 @@ router.get("/", async function (req, res, next) {
  * Authorization required: admin or same-user-as-:username
  **/
 
+router.patch("/:username", async function (req, res, next) {
+  try {
+    // const validator = jsonschema.validate(req.body, userNewSchema);
+
+    const user = await User.update(req.params.username, req.body)
+    return res.json({ user });
+  } catch (err) {
+    return next(err)
+  }
+})
 
 
 /** DELETE /[username]  =>  { deleted: username }
@@ -57,4 +94,11 @@ router.get("/", async function (req, res, next) {
  * Authorization required: admin or same-user-as-:username
  **/
 
-
+router.delete("/:username", async function (req, res, next) {
+  try {
+    await User.remove(req.params.username)
+    return res.json({ deleted: req.params.username });
+  } catch (err) {
+    return next(err)
+  }
+})
