@@ -2,7 +2,7 @@
 
 const db = require("../db");
 const { sqlPartialUpdate } = require("../helpers/sql-partial-update")
-// const { NotFoundError } = require("../../../React JS/projects/react-jobly/backend/expressError");
+const { NotFoundError } = require("../expressError");
 
 /** Related functions for list_items. */
 

@@ -2,7 +2,7 @@
 
 const db = require("../db");
 const { sqlPartialUpdate } = require("../helpers/sql-partial-update")
-// const { NotFoundError } = require("../../../React JS/projects/react-jobly/backend/expressError");
+const { NotFoundError } = require("../expressError");
 
 /** Related functions for destination_lists. */
 
@@ -38,7 +38,7 @@ class List {
     return lists;
   }
 
-  /** Given a list id, return data about list and massociated items.
+  /** Given a list id, return data about list and associated items.
    *
    * Returns { username, id, searched_address, arrival_date, departure_date, [items ...] }
    *
@@ -121,7 +121,7 @@ class List {
     const list = result.rows[0]
 
     if (!list) {
-      // throw new NotFoundError(`No user found with username: ${username}`)
+      // throw new NotFoundError(`No list found: ${list_id}`)
       console.log(`No list found: ${list_id}`)
     };
   }

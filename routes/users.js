@@ -2,8 +2,9 @@
 
 const express = require("express");
 const User = require("../models/user");
-const { createToken } = require("../helpers/tokens");
+const { createToken } = require("../middleware/tokens");
 const router = express.Router();
+const { BadRequestError } = require("../expressError");
 
 /** Routes for users.
  * Still to do:
@@ -102,3 +103,5 @@ router.delete("/:username", async function (req, res, next) {
     return next(err)
   }
 })
+
+module.exports = router;

@@ -4,7 +4,11 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 const {sqlPartialUpdate} = require("../helpers/sql-partial-update")
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
-const { NotFoundError } = require("../../../React JS/projects/react-jobly/backend/expressError");
+const {
+  NotFoundError,
+  BadRequestError,
+  UnauthorizedError,
+} = require("../expressError");
 
 /** Related functions for users. */
 
@@ -36,7 +40,7 @@ class User {
         return user;
       }
     }
-    //error handling if unauthorized
+    throw new UnauthorizedError("Invalid username/password");
   }
 
   /** Register user with data.
@@ -54,8 +58,8 @@ class User {
     );
 
     if (duplicateCheck.rows[0]) {
-      // throw new BadRequestError(`Duplicate username: ${username}`);
       console.log(`Duplicate username: ${username}`);
+      throw new BadRequestError(`Duplicate username: ${username}`);
     }
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
@@ -102,7 +106,9 @@ class User {
     );
     const user = userRes.rows[0];
 
-    // if (!user) throw new NotFoundError(`No user: ${username}`);
+    if (!user) throw new NotFoundError(`No user: ${username}`);
+
+    //get lists associated with user
 
     return user;
   }
@@ -145,10 +151,10 @@ class User {
     const result = await db.query(sqlQuery, [...values, username]);
     const updatedUser = result.rows[0];
 
-    if (!updatedUser) {
-      // throw new NotFoundError(`No user found with username: ${username}`)
-      console.log(`No user found with username: ${username}`)
-    };
+    if (!updatedUser) throw new NotFoundError(`No user: ${username}`);
+
+    delete updatedUser.password;
+    return updatedUser;
   }
 
   /** Delete given user from database; returns undefined. */
@@ -162,10 +168,7 @@ class User {
     );
     const user = result.rows[0]
 
-    if (!user) {
-      // throw new NotFoundError(`No user found with username: ${username}`)
-      console.log(`No user found with username: ${username}`)
-    };
+    if (!user) throw new NotFoundError(`No user: ${username}`);
   }
 }
 

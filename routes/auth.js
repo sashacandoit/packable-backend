@@ -3,8 +3,8 @@
 const User = require("../models/user");
 const express = require("express");
 const router = new express.Router();
-const { createToken } = require("../helpers/tokens");
-// const { BadRequestError } = require("../expressError");
+const { createToken } = require("../middleware/tokens");
+const { BadRequestError } = require("../expressError");
 
 /** Routes for authentication. */
 

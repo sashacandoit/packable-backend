@@ -4,6 +4,7 @@
 const express = require('express');
 const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
+const { NotFoundError } = require("./expressError");
 const { authenticateJWT } = require("./middleware/auth");
 
 const app = express();
