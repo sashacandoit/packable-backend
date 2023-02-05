@@ -22,15 +22,15 @@ async function commonBeforeAll() {
       await bcrypt.hash("password2", BCRYPT_WORK_FACTOR),
     ]);
   
-  // await db.query(`
-  //   INSERT INTO destination_lists (username, 
-  //                     searched_address, 
-  //                     arrival_date, 
-  //                     departure_date)
-  //   VALUES ('u1', 'new york ny', '2023-05-01', '2023-05-03'),
-  //          ('u2', 'paris france', '2023-05-01', '2023-05-03'),
-  //          ('u2', 'mexico city', '2023-05-01', '2023-05-03'),
-  //   RETURNING id`);
+  await db.query(`
+    INSERT INTO destination_lists (username, 
+                      searched_address, 
+                      arrival_date, 
+                      departure_date)
+    VALUES ('u1', 'new york ny', '2023-05-01', '2023-05-03'),
+           ('u2', 'paris france', '2023-05-01', '2023-05-03'),
+           ('u2', 'mexico city', '2023-05-01', '2023-05-03')
+    RETURNING id`);
   
 }
 

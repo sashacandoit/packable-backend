@@ -1,6 +1,5 @@
 ﻿CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  username VARCHAR(25),
+  username VARCHAR(25) PRIMARY KEY,
   password TEXT NOT NULL,
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
@@ -10,10 +9,10 @@
 
 CREATE TABLE destination_lists (
     id SERIAL PRIMARY KEY,
-    user_id int NOT NULL REFERENCES users ON DELETE CASCADE,
+    username TEXT NOT NULL REFERENCES users ON DELETE CASCADE,
     searched_address TEXT NOT NULL,
-    longitude FLOAT NOT NULL,
-    latitude FLOAT NOT NULL,
+    longitude FLOAT,
+    latitude FLOAT,
     arrival_date DATE NOT NULL,
     departure_date DATE NOT NULL
 );
@@ -26,12 +25,9 @@ CREATE TABLE list_items (
     qty int NOT NULL
 );
 
--- ALTER TABLE "Destination_List" ADD CONSTRAINT "fk_Destination_List_user_id" FOREIGN KEY("user_id")
--- REFERENCES "User" ("id");
+-- ALTER TABLE "destination_lists" ADD CONSTRAINT "fk_destination_lists_user" FOREIGN KEY("user")
+-- REFERENCES "users" ("username");
 
--- ALTER TABLE "List_Item" ADD CONSTRAINT "fk_List_Item_user_id" FOREIGN KEY("user_id")
--- REFERENCES "User" ("id");
-
--- ALTER TABLE "List_Item" ADD CONSTRAINT "fk_List_Item_list_id" FOREIGN KEY("list_id")
--- REFERENCES "Destination_List" ("id");
+-- ALTER TABLE "list_items" ADD CONSTRAINT "fk_list_items_list_id" FOREIGN KEY("list_id")
+-- REFERENCES "destination_lists" ("id");
 
