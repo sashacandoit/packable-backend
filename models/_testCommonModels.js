@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const db = require("../db.js");
 const { BCRYPT_WORK_FACTOR } = require("../config");
 
+const testListIds = [];
 
 async function commonBeforeAll() {
   await db.query("DELETE FROM destination_lists");
@@ -22,7 +23,7 @@ async function commonBeforeAll() {
       await bcrypt.hash("password2", BCRYPT_WORK_FACTOR),
     ]);
   
-  await db.query(`
+  const listResults = await db.query(`
     INSERT INTO destination_lists (username, 
                       searched_address, 
                       arrival_date, 
@@ -32,6 +33,7 @@ async function commonBeforeAll() {
            ('u2', 'mexico city', '2023-05-01', '2023-05-03')
     RETURNING id`);
   
+  testListIds.splice(0, 0, ...listResults.rows.map(r => r.id));
 }
 
 async function commonBeforeEach() {
@@ -52,4 +54,5 @@ module.exports = {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
+  testListIds
 };

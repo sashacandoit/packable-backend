@@ -18,16 +18,11 @@ class List {
               destination_lists.id,
               destination_lists.searched_address,
               destination_lists.arrival_date,
-              destination_lists.departure_date,
-              list_items.category,
-              list_items.item,
-              list_items.qty
-      FROM lists
-      LEFT JOIN users ON users.id = destination_lists.user_id
-      RIGHT JOIN list_items ON destination_lists.id = lists_items.list_id
-      WHERE users.id = $1
-      ORDER BY destination_lists.arrival_date`,
-      [user_id]
+              destination_lists.departure_date
+      FROM destination_lists
+      LEFT JOIN users ON users.username = destination_lists.username
+      
+      ORDER BY destination_lists.arrival_date`
     );
     const lists = res.rows;
 
@@ -50,13 +45,9 @@ class List {
               destination_lists.id,
               destination_lists.searched_address,
               destination_lists.arrival_date,
-              destination_lists.departure_date,
-              list_items.category,
-              list_item.item,
-              list_item.qty
-      FROM lists
-      LEFT JOIN users ON users.id = destination_lists.user_id
-      RIGHT JOIN list_items ON destination_lists.id = list_items.list_id
+              destination_lists.departure_date
+      FROM destination_lists
+      LEFT JOIN users ON users.username = destination_lists.username
       WHERE destination_lists.id = $1`,
       [list_id]
     );
@@ -64,10 +55,20 @@ class List {
     const list = listRes.rows[0];
 
     if (!list) {
-      // throw new NotFoundError(`No list: ${list_id}`)
       console.log(`No list: ${list_id}`)
+      throw new NotFoundError(`No list: ${list_id}`)
     };
 
+    const listItemsRes = await db.query(
+      `SELECT list_items.category,
+              list_items.item,
+              list_items.qty
+        FROM list_items
+        WHERE list_id =$1`,
+      [list_id]
+    )
+
+    list.list_items = listItemsRes.rows;
     return list;
   }
 
@@ -80,7 +81,7 @@ class List {
 
   static async create(data) {
     const res = await db.query(
-      `INSERT INTO lists 
+      `INSERT INTO destination_lists 
       (username, 
         searched_address, 
         arrival_date, 
@@ -132,8 +133,8 @@ class List {
     const updatedList = result.rows[0];
 
     if (!updatedList) {
-      // throw new NotFoundError(`No list found: ${list_id}`)
       console.log(`No list found: ${list_id}`)
+      throw new NotFoundError(`No list found: ${list_id}`)
     };
   }
 
@@ -149,10 +150,10 @@ class List {
     const list = result.rows[0]
 
     if (!list) {
-      // throw new NotFoundError(`No list found: ${list_id}`)
       console.log(`No list found: ${list_id}`)
+      throw new NotFoundError(`No list found: ${list_id}`)
     };
   }
 }
 
-module.exports = List
+module.exports = List;
