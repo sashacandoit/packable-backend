@@ -15,18 +15,18 @@ class List {
   static async findAll(user_id) {
     const res = await db.query(
       `SELECT users.username,
-              lists.id,
-              lists.searched_address,
-              lists.arrival_date,
-              lists.departure_date,
+              destination_lists.id,
+              destination_lists.searched_address,
+              destination_lists.arrival_date,
+              destination_lists.departure_date,
               list_items.category,
               list_items.item,
               list_items.qty
       FROM lists
-      LEFT JOIN users ON users.id = lists.user_id
-      RIGHT JOIN list_items ON list.id = lists_items.list_id
+      LEFT JOIN users ON users.id = destination_lists.user_id
+      RIGHT JOIN list_items ON destination_lists.id = lists_items.list_id
       WHERE users.id = $1
-      ORDER BY lists.arrival_date`,
+      ORDER BY destination_lists.arrival_date`,
       [user_id]
     );
     const lists = res.rows;
@@ -47,17 +47,17 @@ class List {
   static async get(list_id) {
     const listRes = await db.query(
       `SELECT users.username,
-              lists.id,
-              lists.searched_address,
-              lists.arrival_date,
-              lists.departure_date,
+              destination_lists.id,
+              destination_lists.searched_address,
+              destination_lists.arrival_date,
+              destination_lists.departure_date,
               list_items.category,
               list_item.item,
               list_item.qty
       FROM lists
-      LEFT JOIN users ON users.id = lists.user_id
-      RIGHT JOIN list_items ON list.id = lists_items.list_id
-      WHERE lists.id = $1`,
+      LEFT JOIN users ON users.id = destination_lists.user_id
+      RIGHT JOIN list_items ON destination_lists.id = list_items.list_id
+      WHERE destination_lists.id = $1`,
       [list_id]
     );
 
@@ -81,12 +81,14 @@ class List {
   static async create(data) {
     const res = await db.query(
       `INSERT INTO lists 
-      (searched_address, 
+      (username, 
+        searched_address, 
         arrival_date, 
         departure_date) 
-      VALUES ($1, $2, $3)
-      RETURNING id, searched_address, arrival_date, departure_date`,
+      VALUES ($1, $2, $3, $4)
+      RETURNING username, id, searched_address, arrival_date, departure_date`,
       [
+        data.username,
         data.searched_address,
         data.arrival_date,
         data.departure_date
@@ -123,7 +125,7 @@ class List {
 
     const sqlQuery = `UPDATE lists
                       SET ${setCols}
-                      WHERE lists.id = ${listIdIdx}
+                      WHERE destination_lists.id = ${listIdIdx}
                       RETURNING searched_address, arrival_date, departure_date`;
 
     const result = await db.query(sqlQuery, [...values, list_id]);
@@ -140,8 +142,8 @@ class List {
     let result = await db.query(
       `DELETE
       FROM lists
-      WHERE list.id = $1
-      RETURNING list.id`,
+      WHERE destination_lists.id = $1
+      RETURNING destination_lists.id`,
       [list_id]
     );
     const list = result.rows[0]

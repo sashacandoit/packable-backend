@@ -34,7 +34,7 @@ class User {
 
     if (user) {
       //compare hashed password to password to a new hash from password entered
-      const isValid = await bcrypt.compare(password, user.pasword);
+      const isValid = await bcrypt.compare(password, user.password);
       if (isValid === true) {
         delete user.password;
         return user;
