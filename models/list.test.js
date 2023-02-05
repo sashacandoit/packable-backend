@@ -94,3 +94,46 @@ describe("get", function () {
     }
   });
 });
+
+
+/************************************** update */
+
+describe("update", function () {
+  let updateData = {
+    searched_address: "washington dc",
+    arrival_date: "06-01-2023",
+    departure_date: "06-03-2023"
+  };
+  test("works", async function () {
+    let list = await List.update(testListIds[0], updateData);
+    expect(list).toEqual({
+      id: testListIds[0],
+      username: "u1",
+      searched_address: "washington dc",
+      arrival_date: expect.any(Date),
+      departure_date: expect.any(Date)
+    });
+  });
+
+  test("works with partial update", async function () {
+    let list = await List.update(testListIds[0], {
+      searched_address: "miami fl"
+    });
+    expect(list).toEqual({
+      id: testListIds[0],
+      username: "u1",
+      searched_address: "miami fl",
+      arrival_date: expect.any(Date),
+      departure_date: expect.any(Date)
+    });
+  });
+
+  test("not found if no such list", async function () {
+    try {
+      await List.update(0, updateData);
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+});

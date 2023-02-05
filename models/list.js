@@ -124,10 +124,10 @@ class List {
 
     const listIdIdx = "$" + (values.length + 1);
 
-    const sqlQuery = `UPDATE lists
+    const sqlQuery = `UPDATE destination_lists
                       SET ${setCols}
                       WHERE destination_lists.id = ${listIdIdx}
-                      RETURNING searched_address, arrival_date, departure_date`;
+                      RETURNING id, username, searched_address, arrival_date, departure_date`;
 
     const result = await db.query(sqlQuery, [...values, list_id]);
     const updatedList = result.rows[0];
@@ -136,6 +136,8 @@ class List {
       console.log(`No list found: ${list_id}`)
       throw new NotFoundError(`No list found: ${list_id}`)
     };
+
+    return updatedList;
   }
 
   /** Delete given list from database; returns undefined. */
