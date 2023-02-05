@@ -71,6 +71,32 @@ class List {
     return list;
   }
 
+  /** Create list with data.
+   *
+   * Returns { searched_address, arrival_date, departure_date }
+   *    where list_items is { category, item, qty }
+   *
+   **/
+
+  static async create(data) {
+    const res = await db.query(
+      `INSERT INTO lists 
+      (searched_address, 
+        arrival_date, 
+        departure_date) 
+      VALUES ($1, $2, $3)
+      RETURNING id, searched_address, arrival_date, departure_date`,
+      [
+        data.searched_address,
+        data.arrival_date,
+        data.departure_date
+      ]);
+    let list = res.rows[0];
+    return list;
+  }
+
+
+
   /** Update list with `data`.
    *
    * This is a "partial update" --- it's fine if data doesn't contain
