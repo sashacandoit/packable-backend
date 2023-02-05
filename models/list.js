@@ -144,7 +144,7 @@ class List {
   static async remove(list_id) {
     let result = await db.query(
       `DELETE
-      FROM lists
+      FROM destination_lists
       WHERE destination_lists.id = $1
       RETURNING destination_lists.id`,
       [list_id]

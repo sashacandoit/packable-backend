@@ -137,3 +137,24 @@ describe("update", function () {
     }
   });
 });
+
+/************************************** remove */
+
+describe("remove", function () {
+  test("works", async function () {
+    await List.remove(testListIds[0]);
+    const res = await db.query(
+      "SELECT id FROM destination_lists WHERE id=$1", [testListIds[0]]);
+    expect(res.rows.length).toEqual(0);
+  });
+
+  test("not found if no such list", async function () {
+    try {
+      await List.remove(0);
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+});
+
