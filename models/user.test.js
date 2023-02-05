@@ -143,3 +143,59 @@ describe("get", function () {
   });
 });
 
+
+/************************************** update */
+
+describe("update", function () {
+  const updateData = {
+    first_name: "NewF",
+    last_name: "NewF",
+    email: "new@email.com",
+  };
+
+  test("works", async function () {
+    let job = await User.update("u1", updateData);
+    expect(job).toEqual({
+      username: "u1",
+      ...updateData,
+    });
+  });
+
+  test("works: set password", async function () {
+    let job = await User.update("u1", {
+      password: "new",
+    });
+    expect(job).toEqual({
+      username: "u1",
+      first_name: "U1First",
+      last_name: "U1Last",
+      email: "u1@email.com",
+    });
+    const found = await db.query("SELECT * FROM users WHERE username = 'u1'");
+    expect(found.rows.length).toEqual(1);
+    expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
+  });
+
+  test("not found if no such user", async function () {
+    try {
+      await User.update("nope", {
+        first_name: "test",
+      });
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+
+  // test("bad request if no data", async function () {
+  //   expect.assertions(1);
+  //   try {
+  //     await User.update("u1", {});
+  //     fail();
+  //   } catch (err) {
+  //     expect(err instanceof BadRequestError).toBeTruthy();
+  //   }
+  // });
+});
+
+
