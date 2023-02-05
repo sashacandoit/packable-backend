@@ -49,3 +49,42 @@ describe("authenticate", function () {
     }
   });
 });
+
+/************************************** register */
+
+describe("register", function () {
+  const newUser = {
+    username: "new",
+    first_name: "Test",
+    last_name: "Tester",
+    email: "test@test.com",
+  };
+
+  test("works", async function () {
+    let user = await User.register({
+      ...newUser,
+      password: "password",
+    });
+    expect(user).toEqual(newUser);
+    const found = await db.query("SELECT * FROM users WHERE username = 'new'");
+    expect(found.rows.length).toEqual(1);
+    expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
+  });
+
+
+  test("bad request with dup data", async function () {
+    try {
+      await User.register({
+        ...newUser,
+        password: "password",
+      });
+      await User.register({
+        ...newUser,
+        password: "password",
+      });
+      fail();
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
+    }
+  });
+});
