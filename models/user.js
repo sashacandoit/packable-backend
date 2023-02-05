@@ -108,8 +108,14 @@ class User {
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
 
-    //get lists associated with user
-
+    const listRes = await db.query(
+      `SELECT id, searched_address, arrival_date, departure_date
+      FROM destination_lists
+      WHERE username = $1
+      ORDER BY arrival_date`,
+      [username]
+    )
+    user.lists = listRes.rows;
     return user;
   }
 

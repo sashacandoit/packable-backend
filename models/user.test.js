@@ -111,3 +111,35 @@ describe("findAll", function () {
     ]);
   });
 });
+
+/************************************** get */
+
+describe("get", function () {
+  test("works", async function () {
+    let user = await User.get("u1");
+    expect(user).toEqual({
+      username: "u1",
+      first_name: "U1First",
+      last_name: "U1Last",
+      email: "u1@email.com",
+      lists: [
+        {
+          id: expect.any(Number),
+          searched_address: 'new york ny',
+          arrival_date: expect.any(Date),
+          departure_date: expect.any(Date)
+        }
+      ]
+    });
+  });
+
+  test("not found if no such user", async function () {
+    try {
+      await User.get("nope");
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+});
+

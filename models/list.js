@@ -12,7 +12,7 @@ class List {
    * Returns [{ username, id, searched_address, arrival_date, departure_date, [items ...] }, ...]
    **/
 
-  static async findAll(user_id) {
+  static async findAll() {
     const res = await db.query(
       `SELECT users.username,
               destination_lists.id,
