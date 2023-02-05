@@ -88,3 +88,26 @@ describe("register", function () {
     }
   });
 });
+
+
+/************************************** findAll */
+
+describe("findAll", function () {
+  test("works", async function () {
+    const users = await User.findAll();
+    expect(users).toEqual([
+      {
+        username: "u1",
+        first_name: "U1First",
+        last_name: "U1Last",
+        email: "u1@email.com",
+      },
+      {
+        username: "u2",
+        first_name: "U2First",
+        last_name: "U2Last",
+        email: "u2@email.com",
+      },
+    ]);
+  });
+});
