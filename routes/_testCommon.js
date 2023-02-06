@@ -16,7 +16,7 @@ async function commonBeforeAll() {
   // noinspection SqlWithoutWhere
   await db.query("DELETE FROM destination_lists");
   
-  await User.register({
+  const user1 = await User.register({
     username: "u1",
     first_name: "U1First",
     last_name: "U1Last",
@@ -24,7 +24,7 @@ async function commonBeforeAll() {
     password: "password1",
     is_admin: false
   });
-  await User.register({
+  const user2 = await User.register({
     username: "u2",
     first_name: "U2First",
     last_name: "U2Last",
@@ -32,6 +32,8 @@ async function commonBeforeAll() {
     password: "password2",
     is_admin: true
   });
+
+  console.log(user2)
 
 
   testListIds[0] = (await List.create(
