@@ -10,7 +10,6 @@ const {
   testListItemIds
 } = require("./_testCommonModels");
 
-
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
@@ -101,4 +100,23 @@ describe("create", function () {
       qty: 1
     })
   })
+})
+
+/************************************** update */
+describe("update", function () {
+  let updateData = {
+    category: "Clothing",
+    item: "swimsuit",
+    qty: 2
+  }
+  test("works", async function () {
+    let listItem = await ListItem.update(testListItemIds[0], updateData);
+    expect(listItem).toEqual({
+      id: testListItemIds[0],
+      list_id: expect.any(Number),
+      category: "Clothing",
+      item: "swimsuit",
+      qty: 2
+    });
+  });
 })

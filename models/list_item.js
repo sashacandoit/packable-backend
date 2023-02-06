@@ -103,7 +103,7 @@ class ListItem {
    *
    * Throws NotFoundError if not found.
    */
-  static async update(listItem_id) {
+  static async update(listItem_id, data) {
     //convert submitted data to useable syntax for request
     const { setCols, values } = sqlPartialUpdate(
       data,
@@ -115,18 +115,19 @@ class ListItem {
 
     const listItemIdIdx = "$" + (values.length + 1);
 
-    const sqlQuery = `UPDATE lists
+    const sqlQuery = `UPDATE list_items
                       SET ${setCols}
                       WHERE id = ${listItemIdIdx}
-                      RETURNING category, item, qty, list_id`;
+                      RETURNING id, list_id, category, item, qty`;
 
     const result = await db.query(sqlQuery, [...values, listItem_id]);
     const updatedItem = result.rows[0];
 
     if (!updatedItem) {
-      // throw new NotFoundError(`No item found: ${listItem_id}`)
       console.log(`No item found: ${listItem_id}`)
+      throw new NotFoundError(`No item found: ${listItem_id}`)
     };
+    return updatedItem;
   }
 
   /** Delete given list_item from database; returns undefined. */
