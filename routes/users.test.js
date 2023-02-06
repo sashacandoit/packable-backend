@@ -11,9 +11,8 @@ const {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
-  testListIds,
-  testListItemIds,
   u1Token,
+  u3Token,
   adminToken
 } = require("./_testCommon");
 
@@ -44,6 +43,13 @@ describe("GET /users", function () {
           last_name: "U2Last",
           email: "user2@user.com",
           is_admin: true,
+        },
+        {
+          username: "u3",
+          first_name: "U3First",
+          last_name: "U3Last",
+          email: "user3@user.com",
+          is_admin: false,
         }
       ],
     });
@@ -230,6 +236,26 @@ describe("GET /users/:username", function () {
           }],
       },
     });
+  });
+
+  test("unauth for other users", async function () {
+    const resp = await request(app)
+      .get(`/users/u1`)
+      .set("authorization", `Bearer ${u3Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  test("unauth for anon", async function () {
+    const resp = await request(app)
+      .get(`/users/u1`);
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  test("not found if user not found", async function () {
+    const resp = await request(app)
+      .get(`/users/nope`)
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(404);
   });
 
 })

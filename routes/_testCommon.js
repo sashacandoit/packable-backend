@@ -32,8 +32,14 @@ async function commonBeforeAll() {
     password: "password2",
     is_admin: true
   });
-
-  console.log(user2)
+  const user3 = await User.register({
+    username: "u3",
+    first_name: "U3First",
+    last_name: "U3Last",
+    email: "user3@user.com",
+    password: "password3",
+    is_admin: false
+  });
 
 
   testListIds[0] = (await List.create(
@@ -81,6 +87,7 @@ async function commonAfterAll() {
 
 
 const u1Token = createToken({ username: "u1", is_admin: false });
+const u3Token = createToken({ username: "u3", is_admin: false });
 const adminToken = createToken({ username: "u2", is_admin: true });
 
 
@@ -92,5 +99,6 @@ module.exports = {
   testListIds,
   testListItemIds,
   u1Token,
+  u3Token,
   adminToken,
 };
