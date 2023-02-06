@@ -63,9 +63,9 @@ describe("register", function () {
   test("works", async function () {
     let user = await User.register({
       ...newUser,
-      password: "password",
+      password: "password"
     });
-    expect(user).toEqual(newUser);
+    expect(user).toEqual({...newUser, is_admin: false});
     const found = await db.query("SELECT * FROM users WHERE username = 'new'");
     expect(found.rows.length).toEqual(1);
     expect(found.rows[0].password.startsWith("$2b$")).toEqual(true);
@@ -98,12 +98,14 @@ describe("findAll", function () {
     expect(users).toEqual([
       {
         username: "u1",
+        is_admin: false,
         first_name: "U1First",
         last_name: "U1Last",
         email: "u1@email.com",
       },
       {
         username: "u2",
+        is_admin: false,
         first_name: "U2First",
         last_name: "U2Last",
         email: "u2@email.com",
@@ -119,6 +121,7 @@ describe("get", function () {
     let user = await User.get("u1");
     expect(user).toEqual({
       username: "u1",
+      is_admin: false,
       first_name: "U1First",
       last_name: "U1Last",
       email: "u1@email.com",
@@ -154,19 +157,21 @@ describe("update", function () {
   };
 
   test("works", async function () {
-    let job = await User.update("u1", updateData);
-    expect(job).toEqual({
+    let user = await User.update("u1", updateData);
+    expect(user).toEqual({
       username: "u1",
+      is_admin: false,
       ...updateData,
     });
   });
 
   test("works: set password", async function () {
-    let job = await User.update("u1", {
+    let user = await User.update("u1", {
       password: "new",
     });
-    expect(job).toEqual({
+    expect(user).toEqual({
       username: "u1",
+      is_admin: false,
       first_name: "U1First",
       last_name: "U1Last",
       email: "u1@email.com",

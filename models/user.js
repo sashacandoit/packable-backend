@@ -72,7 +72,7 @@ class User {
         first_name,
         last_name)
         VALUES ($1, $2, $3, $4, $5)
-        RETURNING username, first_name, last_name, email`,
+        RETURNING username, is_admin, first_name, last_name, email`,
       [username, hashedPassword, email, first_name, last_name],
     );
     const user = result.rows[0];
@@ -85,7 +85,7 @@ class User {
 
   static async findAll() {
     const result = await db.query(
-      `SELECT username, email, first_name, last_name
+      `SELECT username, is_admin, email, first_name, last_name
       FROM users
       ORDER BY username`,
     )
@@ -99,7 +99,7 @@ class User {
 
   static async get(username) {
     const userRes = await db.query(
-      `SELECT username, email, first_name, last_name
+      `SELECT username, is_admin, email, first_name, last_name
       FROM users
       WHERE username = $1`,
       [username],
@@ -153,7 +153,7 @@ class User {
     const sqlQuery = `UPDATE users
                       SET ${setCols}
                       WHERE username = ${usernameIdx}
-                      RETURNING username, first_name, last_name, email`;
+                      RETURNING username, first_name, last_name, email, is_admin`;
     
     const result = await db.query(sqlQuery, [...values, username]);
     const updatedUser = result.rows[0];
