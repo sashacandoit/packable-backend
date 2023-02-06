@@ -119,4 +119,17 @@ describe("update", function () {
       qty: 2
     });
   });
+
+  test("works with partial update", async function () {
+    let list = await ListItem.update(testListItemIds[0], {
+      qty: 4
+    });
+    expect(list).toEqual({
+      id: testListItemIds[0],
+      list_id: expect.any(Number),
+      category: "Clothing",
+      item: "socks",
+      qty: 4
+    });
+  });
 })
