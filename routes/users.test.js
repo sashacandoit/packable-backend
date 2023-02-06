@@ -349,7 +349,7 @@ describe("PATCH /users/:username", () => {
   });
 
   //Add after including json schema validation
-  
+
   // test("bad request if invalid data", async function () {
   //   const resp = await request(app)
   //     .patch(`/users/u1`)
@@ -359,5 +359,43 @@ describe("PATCH /users/:username", () => {
   //     .set("authorization", `Bearer ${adminToken}`);
   //   expect(resp.statusCode).toEqual(400);
   // });
+})
 
+
+/************************************** DELETE /users/:username */
+
+describe("DELETE /users/:username", function () {
+  test("works for admin", async function () {
+    const resp = await request(app)
+      .delete(`/users/u1`)
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.body).toEqual({ deleted: "u1" });
+  });
+
+  test("works for same user", async function () {
+    const resp = await request(app)
+      .delete(`/users/u1`)
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.body).toEqual({ deleted: "u1" });
+  });
+
+  test("unauth if not same user", async function () {
+    const resp = await request(app)
+      .delete(`/users/u1`)
+      .set("authorization", `Bearer ${u3Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  test("unauth for anon", async function () {
+    const resp = await request(app)
+      .delete(`/users/u1`);
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  test("not found if user missing", async function () {
+    const resp = await request(app)
+      .delete(`/users/nope`)
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(404);
+  });
 })
