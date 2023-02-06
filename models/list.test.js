@@ -1,6 +1,6 @@
 "use strict";
 
-const { NotFoundError, BadRequestError } = require("../expressError");
+const { NotFoundError } = require("../expressError");
 const db = require("../db.js");
 const List = require("./list.js");
 const {

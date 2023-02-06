@@ -1,4 +1,4 @@
-const { NotFoundError, BadRequestError } = require("../expressError");
+const { NotFoundError } = require("../expressError");
 const db = require("../db.js");
 const ListItem = require("./list_item.js");
 const {
