@@ -328,4 +328,36 @@ describe("PATCH /users/:username", () => {
     expect(resp.statusCode).toEqual(404);
   });
 
+  test("works: can set new password", async function () {
+    const resp = await request(app)
+      .patch(`/users/u1`)
+      .send({
+        password: "new-password",
+      })
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.body).toEqual({
+      user: {
+        username: "u1",
+        first_name: "U1First",
+        last_name: "U1Last",
+        email: "user1@user.com",
+        is_admin: false,
+      },
+    });
+    const isSuccessful = await User.authenticate("u1", "new-password");
+    expect(isSuccessful).toBeTruthy();
+  });
+
+  //Add after including json schema validation
+  
+  // test("bad request if invalid data", async function () {
+  //   const resp = await request(app)
+  //     .patch(`/users/u1`)
+  //     .send({
+  //       first_name: 42,
+  //     })
+  //     .set("authorization", `Bearer ${adminToken}`);
+  //   expect(resp.statusCode).toEqual(400);
+  // });
+
 })
