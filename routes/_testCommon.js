@@ -3,44 +3,64 @@
 const db = require("../db.js");
 const User = require("../models/user");
 const List = require("../models/list");
+const ListItem = require("../models/list_item");
+
 const { createToken } = require("../middleware/tokens");
 
+const testListIds = []
+const testListItemIds = []
 
 async function commonBeforeAll() {
   // noinspection SqlWithoutWhere
   await db.query("DELETE FROM users");
   // noinspection SqlWithoutWhere
-  await db.query("DELETE FROM lists");
+  await db.query("DELETE FROM destination_lists");
   
   await User.register({
     username: "u1",
-    firstName: "U1First",
-    lastName: "U1Last",
+    first_name: "U1First",
+    last_name: "U1Last",
     email: "user1@user.com",
     password: "password1",
   });
   await User.register({
     username: "u2",
-    firstName: "U2First",
-    lastName: "U2Last",
+    first_name: "U2First",
+    last_name: "U2Last",
     email: "user2@user.com",
     password: "password2",
   });
-  await User.register({
-    username: "u3",
-    firstName: "U3First",
-    lastName: "U3Last",
-    email: "user3@user.com",
-    password: "password3",
-  });
+
 
   testListIds[0] = (await List.create(
     { username: "u1", searched_address: "new york ny", arrival_date: "2023-05-01", departure_date: "2023-05-03" })).id;
   testListIds[1] = (await List.create(
     { username: "u1", searched_address: "paris france", arrival_date: "2023-05-01", departure_date: "2023-05-03" })).id;
   testListIds[2] = (await List.create(
-    { username: "u1", searched_address: "mexico city", arrival_date: "2023-05-01", departure_date: "2023-05-03" })).id;
-
+    { username: "u2", searched_address: "mexico city", arrival_date: "2023-05-01", departure_date: "2023-05-03" })).id;
+  
+  
+  testListItemIds[0] = (await ListItem.create(
+    {
+      list_id: testListIds[0],
+      category: "Accessories",
+      item: "sunglasses",
+      qty: 1
+    })).id;
+  testListItemIds[1] = (await ListItem.create(
+    {
+      list_id: testListIds[0],
+      category: "Clothing",
+      item: "socks",
+      qty: 4
+    })).id;
+  testListItemIds[2] = (await ListItem.create(
+    {
+      list_id: testListIds[0],
+      category: "Documents",
+      item: "passport",
+      qty: 1
+    })).id;
 }
 
 async function commonBeforeEach() {
@@ -58,7 +78,6 @@ async function commonAfterAll() {
 
 const u1Token = createToken({ username: "u1" });
 const u2Token = createToken({ username: "u2" });
-const u3Token = createToken({ username: "u3" });
 
 
 module.exports = {
@@ -66,8 +85,8 @@ module.exports = {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
-  testJobIds,
+  testListIds,
+  testListItemIds,
   u1Token,
   u2Token,
-  u3Token,
 };
