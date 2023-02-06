@@ -298,4 +298,34 @@ describe("PATCH /users/:username", () => {
       },
     });
   });
+
+  test("unauth if not same user", async function () {
+    const resp = await request(app)
+      .patch(`/users/u1`)
+      .send({
+        first_name: "New",
+      })
+      .set("authorization", `Bearer ${u3Token}`);
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  test("unauth for anon", async function () {
+    const resp = await request(app)
+      .patch(`/users/u1`)
+      .send({
+        first_name: "New",
+      });
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  test("not found if no such user", async function () {
+    const resp = await request(app)
+      .patch(`/users/nope`)
+      .send({
+        first_name: "Nope",
+      })
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(404);
+  });
+
 })
