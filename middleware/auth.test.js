@@ -11,8 +11,8 @@ const {
 
 const { SECRET_KEY } = require("../config");
 
-const testJwt = jwt.sign({ username: "test" }, SECRET_KEY);
-const badJwt = jwt.sign({ username: "test" }, "wrong");
+const testJwt = jwt.sign({ username: "test", is_admin: false }, SECRET_KEY);
+const badJwt = jwt.sign({ username: "test", is_admin: false }, "wrong");
 
 describe("authenticateJWT", function () {
   test("works: via header", function () {
@@ -27,6 +27,7 @@ describe("authenticateJWT", function () {
       user: {
         iat: expect.any(Number),
         username: "test",
+        is_admin: false
       },
     });
   });
@@ -58,7 +59,7 @@ describe("ensureLoggedIn", function () {
   test("works", function () {
     expect.assertions(1);
     const req = {};
-    const res = { locals: { user: { username: "test" } } };
+    const res = { locals: { user: { username: "test", is_admin: false } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
@@ -80,7 +81,7 @@ describe("ensureCorrectUser", function () {
   test("works: same user", function () {
     expect.assertions(1);
     const req = { params: { username: "test" } };
-    const res = { locals: { user: { username: "test", isAdmin: false } } };
+    const res = { locals: { user: { username: "test", is_admin: false } } };
     const next = function (err) {
       expect(err).toBeFalsy();
     };
@@ -108,3 +109,34 @@ describe("ensureCorrectUser", function () {
   });
 });
 
+describe("ensureAdmin", function () {
+  test("works", function () {
+    expect.assertions(1);
+    const req = {};
+    const res = { locals: { user: { username: "test", is_admin: true } } };
+    const next = function (err) {
+      expect(err).toBeFalsy();
+    };
+    ensureAdmin(req, res, next);
+  });
+
+  test("unauth if not admin", function () {
+    expect.assertions(1);
+    const req = {};
+    const res = { locals: { user: { username: "test", is_admin: false } } };
+    const next = function (err) {
+      expect(err instanceof UnauthorizedError).toBeTruthy();
+    };
+    ensureAdmin(req, res, next);
+  });
+
+  test("unauth if anon", function () {
+    expect.assertions(1);
+    const req = {};
+    const res = { locals: {} };
+    const next = function (err) {
+      expect(err instanceof UnauthorizedError).toBeTruthy();
+    };
+    ensureAdmin(req, res, next);
+  });
+});
