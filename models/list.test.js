@@ -81,7 +81,28 @@ describe("get", function () {
       searched_address: "new york ny",
       arrival_date: expect.any(Date),
       departure_date: expect.any(Date),
-      list_items: [],
+      list_items: [
+        {
+          category: "Clothing",
+          item: "socks",
+          qty: 5
+        },
+        {
+          category: "Footware",
+          item: "dress shoes",
+          qty: 1
+        },
+        {
+          category: "Accessories",
+          item: "sunglasses",
+          qty: 1
+        },
+        {
+          category: "Clothing",
+          item: "pajamas",
+          qty: 2
+        }
+      ],
     });
   });
 

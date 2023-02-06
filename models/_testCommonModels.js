@@ -34,7 +34,24 @@ async function commonBeforeAll() {
     RETURNING id`);
   
   testListIds.splice(0, 0, ...listResults.rows.map(r => r.id));
+
+  const listItems = await db.query(`
+    INSERT INTO list_items (
+              list_id,
+              category,
+              item,
+              qty
+              )
+    VALUES ($1, 'Clothing', 'socks', 5),
+           ($1, 'Footware', 'dress shoes', 1),
+           ($1, 'Accessories', 'sunglasses', 1),
+           ($1, 'Clothing', 'pajamas', 2)
+    RETURNING id`,
+    [testListIds[0]]
+  );
 }
+
+
 
 async function commonBeforeEach() {
   await db.query("BEGIN");

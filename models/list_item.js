@@ -12,16 +12,17 @@ class ListItem {
   **/
   static async findAll(list_id) {
     const res = await db.query(
-      `SELECT lists.id,
-              lists.searched_address,
-              lists.arrival_date,
-              lists.departure_date,
+      `SELECT list_items.id,
+              list_items.list_id,
+              destination_lists.searched_address,
+              destination_lists.arrival_date,
+              destination_lists.departure_date,
               list_items.category,
               list_items.item,
               list_items.qty
-      FROM lists
-      LEFT JOIN users ON lists.id = list_items.list_id
-      WHERE list.id = $1
+      FROM list_items
+      LEFT JOIN destination_lists ON destination_lists.id = list_items.list_id
+      WHERE list_items.list_id = $1
       ORDER BY list_items.category`,
       [list_id]
     );
@@ -29,6 +30,7 @@ class ListItem {
 
     if (!listItems) {
       console.log('No Items Added To List Yet')
+      throw new NotFoundError('No Items Added To List Yet')
     };
 
     return listItems;
