@@ -187,8 +187,8 @@ describe("GET /users/:username", function () {
         last_name: "U1Last",
         email: "user1@user.com",
         is_admin: false,
-        lists: [
-          {
+        lists:
+          [{
             id: expect.any(Number),
             searched_address: "new york ny",
             arrival_date: "2023-05-01T04:00:00.000Z",
@@ -199,9 +199,37 @@ describe("GET /users/:username", function () {
             searched_address: "paris france",
             arrival_date: "2023-05-01T04:00:00.000Z",
             departure_date: "2023-05-03T04:00:00.000Z"
-          }
-        ]
+          }]
       },
     });
   });
+
+  test("works for same user", async function () {
+    const resp = await request(app)
+      .get(`/users/u1`)
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.body).toEqual({
+      user: {
+        username: "u1",
+        first_name: "U1First",
+        last_name: "U1Last",
+        email: "user1@user.com",
+        is_admin: false,
+        lists:
+          [{
+            id: expect.any(Number),
+            searched_address: "new york ny",
+            arrival_date: "2023-05-01T04:00:00.000Z",
+            departure_date: "2023-05-03T04:00:00.000Z"
+          },
+          {
+            id: expect.any(Number),
+            searched_address: "paris france",
+            arrival_date: "2023-05-01T04:00:00.000Z",
+            departure_date: "2023-05-03T04:00:00.000Z"
+          }],
+      },
+    });
+  });
+
 })
