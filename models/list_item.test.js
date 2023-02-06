@@ -132,4 +132,33 @@ describe("update", function () {
       qty: 4
     });
   });
+
+  test("not found if no such list", async function () {
+    try {
+      await ListItem.update(0, updateData);
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
 })
+
+/************************************** remove */
+
+describe("remove", function () {
+  test("works", async function () {
+    await ListItem.remove(testListItemIds[0]);
+    const res = await db.query(
+      "SELECT id FROM list_items WHERE id=$1", [testListIds[0]]);
+    expect(res.rows.length).toEqual(0);
+  });
+
+  test("not found if no such list", async function () {
+    try {
+      await ListItem.remove(0);
+      fail();
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+});

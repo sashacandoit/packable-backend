@@ -142,8 +142,8 @@ class ListItem {
     const item = result.rows[0]
 
     if (!item) {
-      // throw new NotFoundError(`No item found: ${listItem_id}`)
       console.log(`No item found: ${listItem_id}`)
+      throw new NotFoundError(`No item found: ${listItem_id}`)
     };
   }
 
