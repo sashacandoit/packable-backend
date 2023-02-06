@@ -73,7 +73,7 @@ describe("get", function () {
     let listItem = await ListItem.get(testListItemIds[0]);
     expect(listItem).toEqual({
       id: expect.any(Number),
-      list_id: expect.any(Number),
+      list_id: testListIds[0],
       category: "Clothing",
       item: "socks",
       qty: 5
@@ -82,3 +82,23 @@ describe("get", function () {
 })
 
 /************************************** create */
+describe("create", function () {
+
+  test("works", async function () {
+    let listItem = await ListItem.create(
+      {
+        list_id: testListIds[0],
+        category: "Documents",
+        item: "passport",
+        qty: 1
+      }
+    );
+    expect(listItem).toEqual({
+      id: expect.any(Number),
+      list_id: testListIds[0],
+      category: "Documents",
+      item: "passport",
+      qty: 1
+    })
+  })
+})
