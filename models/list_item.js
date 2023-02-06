@@ -45,12 +45,12 @@ class ListItem {
 
   static async get(listItems_id) {
     const res = await db.query(
-      `SELECT lists.id,
-              list_items.category,
-              list_item.item,
-              list_item.qty
+      `SELECT id,
+              list_id,
+              category,
+              item,
+              qty
       FROM list_items
-      LEFT JOIN lists ON lists.id = list_items.list_id
       WHERE list_items.id = $1`,
       [listItems_id]
     );
@@ -58,8 +58,8 @@ class ListItem {
     const listItem = res.rows[0];
 
     if (!listItem) {
-      // throw new NotFoundError(`Item not found: ${listItems_id}`)
       console.log(`Item not found: ${listItems_id}`)
+      throw new NotFoundError(`Item not found: ${listItems_id}`)
     };
 
     return listItem;

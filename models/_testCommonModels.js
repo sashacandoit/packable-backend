@@ -4,6 +4,7 @@ const db = require("../db.js");
 const { BCRYPT_WORK_FACTOR } = require("../config");
 
 const testListIds = [];
+const testListItemIds = [];
 
 async function commonBeforeAll() {
   await db.query("DELETE FROM destination_lists");
@@ -49,6 +50,7 @@ async function commonBeforeAll() {
     RETURNING id`,
     [testListIds[0]]
   );
+  testListItemIds.splice(0, 0, ...listItems.rows.map(r => r.id));
 }
 
 
@@ -71,5 +73,6 @@ module.exports = {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
-  testListIds
+  testListIds,
+  testListItemIds
 };

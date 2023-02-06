@@ -6,8 +6,10 @@ const {
   commonBeforeEach,
   commonAfterEach,
   commonAfterAll,
-  testListIds
+  testListIds,
+  testListItemIds
 } = require("./_testCommonModels");
+
 
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
@@ -64,3 +66,19 @@ describe("findAll", function () {
     ]);
   });
 });
+
+/************************************** get */
+describe("get", function () {
+  test("works", async function () {
+    let listItem = await ListItem.get(testListItemIds[0]);
+    expect(listItem).toEqual({
+      id: expect.any(Number),
+      list_id: expect.any(Number),
+      category: "Clothing",
+      item: "socks",
+      qty: 5
+    })
+  })
+})
+
+/************************************** create */
