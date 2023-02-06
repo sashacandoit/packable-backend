@@ -4,6 +4,7 @@ const express = require("express");
 const User = require("../models/user");
 const { createToken } = require("../middleware/tokens");
 const router = express.Router();
+const { ensureCorrectUser, ensureAdmin } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 
 /** Routes for users.
@@ -19,7 +20,7 @@ const { BadRequestError } = require("../expressError");
  *
  **/
 
-router.get("/", async function (req, res, next) {
+router.get("/", ensureAdmin, async function (req, res, next) {
   try {
     const users = await User.findAll();
     return res.json({ users });
@@ -36,7 +37,7 @@ router.get("/", async function (req, res, next) {
  *
  **/
 
-router.get("/:username", async function (req, res, next) {
+router.get("/:username", ensureCorrectUser, async function (req, res, next) {
   try {
     const user = await User.get(req.params.username);
     return res.json({user})
@@ -55,7 +56,7 @@ router.get("/:username", async function (req, res, next) {
  *
  **/
 
-router.post("/", async function (req, res, next) {
+router.post("/", ensureAdmin, async function (req, res, next) {
   try {
     // const validator = jsonschema.validate(req.body, userNewSchema);
 
@@ -78,7 +79,7 @@ router.post("/", async function (req, res, next) {
  * Authorization required: admin or same-user-as-:username
  **/
 
-router.patch("/:username", async function (req, res, next) {
+router.patch("/:username", ensureCorrectUser, async function (req, res, next) {
   try {
     // const validator = jsonschema.validate(req.body, userNewSchema);
 
@@ -95,7 +96,7 @@ router.patch("/:username", async function (req, res, next) {
  * Authorization required: admin or same-user-as-:username
  **/
 
-router.delete("/:username", async function (req, res, next) {
+router.delete("/:username", ensureCorrectUser, async function (req, res, next) {
   try {
     await User.remove(req.params.username)
     return res.json({ deleted: req.params.username });
