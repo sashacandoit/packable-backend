@@ -257,5 +257,45 @@ describe("GET /users/:username", function () {
       .set("authorization", `Bearer ${adminToken}`);
     expect(resp.statusCode).toEqual(404);
   });
+})
 
+
+/************************************** PATCH /users/:username */
+
+describe("PATCH /users/:username", () => {
+  test("works for admins", async function () {
+    const resp = await request(app)
+      .patch(`/users/u1`)
+      .send({
+        first_name: "New",
+      })
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.body).toEqual({
+      user: {
+        username: "u1",
+        first_name: "New",
+        last_name: "U1Last",
+        email: "user1@user.com",
+        is_admin: false
+      },
+    });
+  });
+
+  test("works for same user", async function () {
+    const resp = await request(app)
+      .patch(`/users/u1`)
+      .send({
+        first_name: "New",
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.body).toEqual({
+      user: {
+        username: "u1",
+        first_name: "New",
+        last_name: "U1Last",
+        email: "user1@user.com",
+        is_admin: false
+      },
+    });
+  });
 })
