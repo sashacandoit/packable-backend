@@ -13,7 +13,8 @@ const {
   testListIds,
   testListItemIds,
   u1Token,
-  adminToken
+  adminToken,
+  u3Token
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -115,6 +116,17 @@ describe("POST /lists", function () {
         departure_date: "2023-05-03T04:00:00.000Z"
       },
     });
+  });
+
+  test("unauth anon", async function () {
+    const resp = await request(app)
+      .post("/lists")
+      .send({
+        searched_address: "washington dc",
+        arrival_date: "2023-05-01",
+        departure_date: "2023-05-03"
+      })
+    expect(resp.statusCode).toEqual(401);
   });
 
 })

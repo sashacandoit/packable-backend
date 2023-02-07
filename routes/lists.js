@@ -3,7 +3,7 @@
 const express = require("express");
 const List = require("../models/list");
 const router = express.Router();
-const { ensureCorrectUser, ensureAdmin } = require("../middleware/auth");
+const { ensureCorrectUser, ensureAdmin, ensureLoggedIn } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 
 /** Routes for lists.
@@ -56,7 +56,7 @@ router.get("/:id", ensureCorrectUser, async function (req, res, next) {
  * Authorization required: current user
  */
 
-router.post("/", async function (req, res, next) {
+router.post("/", ensureLoggedIn, async function (req, res, next) {
   try {
     const currUser = res.locals.user
     const list = await List.create(req.body, (currUser.is_admin ? req.body.username : currUser.username))
