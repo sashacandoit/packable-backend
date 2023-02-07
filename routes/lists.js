@@ -1,8 +1,9 @@
 "use strict";
 
 const express = require("express");
-const List = require("../models/user");
+const List = require("../models/list");
 const router = express.Router();
+const { ensureCorrectUser, ensureAdmin } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 
 /** Routes for lists.
@@ -17,13 +18,14 @@ const { BadRequestError } = require("../expressError");
  * Authorization required: none
  */
 
-// router.get("/", async function (req, res, next) {
-//   try {
-//     const lists = await List.findAll()
-//   } catch (err) {
-
-//   }
-// })
+router.get("/", ensureAdmin, async function (req, res, next) {
+  try {
+    const lists = await List.findAll();
+    return res.json({ lists });
+  } catch (err) {
+    return next(err)
+  }
+})
 
 
 /** GET /[list_id] => { list }
@@ -34,7 +36,7 @@ const { BadRequestError } = require("../expressError");
  * Authorization required: only lists by current user can be accessed
  */
 
-router.get("/:id", async function (req, res, next) {
+router.get("/:id", ensureCorrectUser, async function (req, res, next) {
   try {
     const list = await List.get(req.params.id)
     return res.json({ list });
@@ -54,7 +56,7 @@ router.get("/:id", async function (req, res, next) {
  * Authorization required: current user
  */
 
-router.post("/", async function (req, res, next) {
+router.post("/", ensureCorrectUser, async function (req, res, next) {
   try {
     const list = await List.create(req.body)
     return res.status(201).json({ list });
@@ -73,7 +75,7 @@ router.post("/", async function (req, res, next) {
  * Authorization required: current user
  */
 
-router.patch("/:id", async function (req, res, next) {
+router.patch("/:id", ensureCorrectUser, async function (req, res, next) {
   try {
     // const validator = jsonschema.validate(req.body, updateListSchema);
 
@@ -89,7 +91,7 @@ router.patch("/:id", async function (req, res, next) {
  * Authorization required: current user
  **/
 
-router.delete("/:id", async function (req, res, next) {
+router.delete("/:id", ensureCorrectUser, async function (req, res, next) {
   try {
     await List.remove(req.params.id)
     return res.json({ deleted: req.params.id });

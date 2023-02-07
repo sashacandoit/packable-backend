@@ -14,15 +14,13 @@ class List {
 
   static async findAll() {
     const res = await db.query(
-      `SELECT users.username,
-              destination_lists.id,
-              destination_lists.searched_address,
-              destination_lists.arrival_date,
-              destination_lists.departure_date
+      `SELECT username,
+              id,
+              searched_address,
+              arrival_date,
+              departure_date
       FROM destination_lists
-      LEFT JOIN users ON users.username = destination_lists.username
-      
-      ORDER BY destination_lists.arrival_date`
+      ORDER BY arrival_date`
     );
     const lists = res.rows;
 
@@ -41,13 +39,12 @@ class List {
    **/
   static async get(list_id) {
     const listRes = await db.query(
-      `SELECT users.username,
-              destination_lists.id,
-              destination_lists.searched_address,
-              destination_lists.arrival_date,
-              destination_lists.departure_date
+      `SELECT username,
+              id,
+              searched_address,
+              arrival_date,
+              departure_date
       FROM destination_lists
-      LEFT JOIN users ON users.username = destination_lists.username
       WHERE destination_lists.id = $1`,
       [list_id]
     );
