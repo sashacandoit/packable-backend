@@ -59,7 +59,7 @@ router.get("/:id", ensureCorrectUser, async function (req, res, next) {
 router.post("/", async function (req, res, next) {
   try {
     const currUser = res.locals.user
-    const list = await List.create(req.body, currUser.username)
+    const list = await List.create(req.body, (currUser.is_admin ? req.body.username : currUser.username))
     console.log(list)
     return res.status(201).json({ list });
   } catch (err) {

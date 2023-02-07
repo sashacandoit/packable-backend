@@ -72,12 +72,12 @@ describe("GET /lists", function () {
 /************************************** POST /jobs */
 
 describe("POST /lists", function () {
-  console.log(adminToken.payload)
+  console.log(adminToken)
   test("ok for admin", async function () {
     const resp = await request(app)
       .post(`/lists`)
       .send({
-        username: "u2",
+        username: "u1",
         searched_address: "washington dc",
         arrival_date: "2023-05-01",
         departure_date: "2023-05-03"
@@ -87,7 +87,7 @@ describe("POST /lists", function () {
     expect(resp.body).toEqual({
       list: {
         id: expect.any(Number),
-        username: "u2",
+        username: "u1",
         searched_address: "washington dc",
         arrival_date: "2023-05-01T04:00:00.000Z",
         departure_date: "2023-05-03T04:00:00.000Z"
