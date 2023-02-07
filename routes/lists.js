@@ -33,10 +33,10 @@ router.get("/", ensureAdmin, async function (req, res, next) {
  * Returns { username, id, searched_address, arrival_date, departure_date, list_items }
  *   where list_items is { category, item, qty }
  *
- * Authorization required: only lists by current user can be accessed
+ * Authorization required: only lists by current user or admin can be accessed
  */
 
-router.get("/:id", ensureCorrectUser, async function (req, res, next) {
+router.get("/:id", ensureLoggedIn, async function (req, res, next) {
   try {
     const list = await List.get(req.params.id)
     return res.json({ list });
@@ -77,7 +77,7 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
  * Authorization required: current user
  */
 
-router.patch("/:id", ensureCorrectUser, async function (req, res, next) {
+router.patch("/:id", ensureLoggedIn, async function (req, res, next) {
   try {
     // const validator = jsonschema.validate(req.body, updateListSchema);
 
