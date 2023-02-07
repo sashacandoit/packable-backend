@@ -93,6 +93,7 @@ describe("ensureCorrectUser", function () {
     const req = { params: { username: "wrong" } };
     const res = { locals: { user: { username: "test" } } };
     const next = function (err) {
+      console.log(err)
       expect(err instanceof UnauthorizedError).toBeTruthy();
     };
     ensureCorrectUser(req, res, next);

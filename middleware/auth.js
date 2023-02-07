@@ -51,7 +51,7 @@ function ensureLoggedIn(req, res, next) {
 function ensureCorrectUser(req, res, next) {
   try {
     const user = res.locals.user;
-    if (!(user && (user.is_admin || user.username === req.params.username || user.username === req.body.username))) {
+    if (!(user && (user.is_admin || user.username === req.params.username ))) {
       throw new UnauthorizedError();
     }
     return next();
