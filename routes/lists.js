@@ -56,9 +56,11 @@ router.get("/:id", ensureCorrectUser, async function (req, res, next) {
  * Authorization required: current user
  */
 
-router.post("/", ensureCorrectUser, async function (req, res, next) {
+router.post("/", async function (req, res, next) {
   try {
-    const list = await List.create(req.body)
+    const currUser = res.locals.user
+    const list = await List.create(req.body, currUser.username)
+    console.log(list)
     return res.status(201).json({ list });
   } catch (err) {
     return next (err)

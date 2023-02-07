@@ -76,7 +76,7 @@ class List {
    *
    **/
 
-  static async create(data) {
+  static async create(data, username) {
     const res = await db.query(
       `INSERT INTO destination_lists 
       (username, 
@@ -86,7 +86,7 @@ class List {
       VALUES ($1, $2, $3, $4)
       RETURNING username, id, searched_address, arrival_date, departure_date`,
       [
-        data.username,
+        username,
         data.searched_address,
         data.arrival_date,
         data.departure_date

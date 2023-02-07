@@ -68,3 +68,53 @@ describe("GET /lists", function () {
     expect(resp.statusCode).toEqual(401);
   });
 })
+
+/************************************** POST /jobs */
+
+describe("POST /lists", function () {
+  console.log(adminToken.payload)
+  test("ok for admin", async function () {
+    const resp = await request(app)
+      .post(`/lists`)
+      .send({
+        username: "u2",
+        searched_address: "washington dc",
+        arrival_date: "2023-05-01",
+        departure_date: "2023-05-03"
+      })
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(201);
+    expect(resp.body).toEqual({
+      list: {
+        id: expect.any(Number),
+        username: "u2",
+        searched_address: "washington dc",
+        arrival_date: "2023-05-01T04:00:00.000Z",
+        departure_date: "2023-05-03T04:00:00.000Z"
+      },
+    });
+  });
+
+  test("ok for same user", async function () {
+    const resp = await request(app)
+      .post(`/lists`)
+      .send({
+        username: "u1",
+        searched_address: "washington dc",
+        arrival_date: "2023-05-01",
+        departure_date: "2023-05-03"
+      }, "u1")
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(201);
+    expect(resp.body).toEqual({
+      list: {
+        id: expect.any(Number),
+        username: "u1",
+        searched_address: "washington dc",
+        arrival_date: "2023-05-01T04:00:00.000Z",
+        departure_date: "2023-05-03T04:00:00.000Z"
+      },
+    });
+  });
+
+})

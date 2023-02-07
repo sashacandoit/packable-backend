@@ -52,14 +52,13 @@ describe("findAll", function () {
 /************************************** create */
 describe("create", function () {
   let newList = {
-    username: "u1",
     searched_address: "washington dc",
     arrival_date: "2023-05-01",
     departure_date: "2023-05-03"
   };
 
   test("works", async function () {
-    let list = await List.create(newList);
+    let list = await List.create(newList, "u1");
     expect(list).toEqual({
       username: "u1",
       searched_address: "washington dc",
