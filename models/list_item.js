@@ -10,7 +10,7 @@ class ListItem {
   /** Find all items by given list_id.
   * Returns [{ list_id, id, category, item, qty }, ...]
   **/
-  static async findAll(list_id) {
+  static async findAll() {
     const res = await db.query(
       `SELECT id,
               list_id,
@@ -18,9 +18,7 @@ class ListItem {
               item,
               qty
       FROM list_items
-      WHERE list_id = $1
-      ORDER BY list_items.category`,
-      [list_id]
+      ORDER BY list_items.category`
     );
     const listItems = res.rows;
 

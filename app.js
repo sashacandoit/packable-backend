@@ -5,6 +5,8 @@ const express = require('express');
 const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
 const listsRoutes = require("./routes/lists");
+const listItemsRoutes = require("./routes/list_items");
+
 const { NotFoundError } = require("./expressError");
 const { authenticateJWT } = require("./middleware/auth");
 
@@ -23,6 +25,8 @@ app.get('/', function (req, res) {
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/lists", listsRoutes);
+app.use("/items", listItemsRoutes);
+
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next) {
