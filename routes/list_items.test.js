@@ -100,3 +100,41 @@ describe("POST /list_item", function () {
     expect(resp.statusCode).toEqual(401);
   });
 })
+
+/************************************** get */
+
+describe("get list item", function () {
+  test("works", async function () {
+    const resp = await request(app)
+      .get(`/items/${testListItemIds[0]}`)
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.body).toEqual({
+      listItem: {
+        id: expect.any(Number),
+        list_id: testListIds[0],
+        category: "Accessories",
+        item: "sunglasses",
+        qty: 1,
+        searched_address: "new york ny",
+        arrival_date: "2023-05-01T04:00:00.000Z",
+        departure_date: "2023-05-03T04:00:00.000Z"
+      }
+    });
+  });
+
+  test("not found if no such item", async function () {
+    try {
+      const resp = await request(app)
+        .get(`/items/0`)
+        .set("authorization", `Bearer ${adminToken}`);
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+
+  test("unauth for anon", async function () {
+    const resp = await request(app)
+      .get(`/items/${testListItemIds[0]}`)
+    expect(resp.statusCode).toEqual(401);
+  });
+});

@@ -34,7 +34,7 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
 
 router.get("/:id", ensureLoggedIn, async function (req, res, next) {
   try {
-    const listItem = await List.get(req.params.id)
+    const listItem = await ListItem.get(req.params.id)
     return res.json({ listItem });
   } catch (err) {
     return next(err);
