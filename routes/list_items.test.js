@@ -22,7 +22,7 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/************************************** GET /list_items */
+/************************************** GET /items */
 
 describe("GET /list_items", function () {
   test("works", async function () {
@@ -101,7 +101,8 @@ describe("POST /list_item", function () {
   });
 })
 
-/************************************** get */
+
+/************************************** GET /items/:id */
 
 describe("get list item", function () {
   test("works", async function () {
@@ -136,5 +137,97 @@ describe("get list item", function () {
     const resp = await request(app)
       .get(`/items/${testListItemIds[0]}`)
     expect(resp.statusCode).toEqual(401);
+  });
+});
+
+
+
+/************************************** PATCH /lists/:id */
+
+describe("PATCH /items/:id", function () {
+  test("works for admin", async function () {
+    const resp = await request(app)
+      .patch(`/items/${testListItemIds[0]}`)
+      .send({
+        qty: 2,
+      })
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.body).toEqual({
+      listItem: {
+        id: testListItemIds[0],
+        list_id: testListIds[0],
+        category: "Accessories",
+        item: "sunglasses",
+        qty: 2
+      }
+    });
+  });
+
+  test("works for logged in user", async function () {
+    const resp = await request(app)
+      .patch(`/items/${testListItemIds[0]}`)
+      .send({
+        qty: 2,
+      })
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.body).toEqual({
+      listItem: {
+        id: testListItemIds[0],
+        list_id: testListIds[0],
+        category: "Accessories",
+        item: "sunglasses",
+        qty: 2
+      }
+    });
+  });
+
+  test("unauth for anon", async function () {
+    const resp = await request(app)
+      .patch(`/items/${testListIds[0]}`)
+      .send({ qty: 2 })
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  test("not found if no such list", async function () {
+    try {
+      const resp = await request(app)
+        .patch(`/items/0`)
+        .send({ qty: 2 })
+        .set("authorization", `Bearer ${adminToken}`);
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+})
+
+
+/************************************** DELETE /items/:id */
+
+describe("DELETE /items/:id", function () {
+  test("works for admin", async function () {
+    const resp = await request(app)
+      .delete(`/items/${testListItemIds[0]}`)
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.body).toEqual({ deleted: `${testListItemIds[0]}` });
+  });
+
+  test("works for logged in", async function () {
+    const resp = await request(app)
+      .delete(`/items/${testListItemIds[0]}`)
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.body).toEqual({ deleted: `${testListItemIds[0]}` });
+  });
+
+  test("unauth for anon", async function () {
+    const resp = await request(app)
+      .delete(`/items/${testListItemIds[0]}`);
+    expect(resp.statusCode).toEqual(401);
+  });
+
+  test("not found for no such item", async function () {
+    const resp = await request(app)
+      .delete(`/items/0`)
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(404);
   });
 });
