@@ -2,13 +2,14 @@
 
 const express = require("express");
 const List = require("../models/list");
+const ListItem = require("../models/list_item");
+
 const router = express.Router();
 const { ensureCorrectUser, ensureAdmin, ensureLoggedIn } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 
 /** Routes for lists.
  * Still to do:
- * add isAdmin
  * add jSON schema validator
  */
 
@@ -101,6 +102,7 @@ router.delete("/:id", ensureCorrectUser, async function (req, res, next) {
     return next(err)
   }
 })
+
 
 module.exports = router;
 

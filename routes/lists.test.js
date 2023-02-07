@@ -282,6 +282,7 @@ describe("DELETE /lists/:id", function () {
     expect(resp.body).toEqual({ deleted: `${testListIds[0]}` });
   });
 
+  //might cause an issue later with user deleting own lists
   test("unauth for others", async function () {
     const resp = await request(app)
       .delete(`/lists/${testListIds[0]}`)

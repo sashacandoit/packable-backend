@@ -25,9 +25,6 @@ describe("findAll", function () {
       {
         id: expect.any(Number),
         list_id: testListIds[0],
-        searched_address: "new york ny",
-        arrival_date: expect.any(Date),
-        departure_date: expect.any(Date),
         category: "Accessories",
         item: "sunglasses",
         qty: 1
@@ -35,9 +32,6 @@ describe("findAll", function () {
       {
         id: expect.any(Number),
         list_id: testListIds[0],
-        searched_address: "new york ny",
-        arrival_date: expect.any(Date),
-        departure_date: expect.any(Date),
         category: "Clothing",
         item: "socks",
         qty: 5
@@ -45,9 +39,6 @@ describe("findAll", function () {
       {
         id: expect.any(Number),
         list_id: testListIds[0],
-        searched_address: "new york ny",
-        arrival_date: expect.any(Date),
-        departure_date: expect.any(Date),
         category: "Clothing",
         item: "pajamas",
         qty: 2
@@ -55,9 +46,6 @@ describe("findAll", function () {
       {
         id: expect.any(Number),
         list_id: testListIds[0],
-        searched_address: "new york ny",
-        arrival_date: expect.any(Date),
-        departure_date: expect.any(Date),
         category: "Footware",
         item: "dress shoes",
         qty: 1
@@ -75,7 +63,10 @@ describe("get", function () {
       list_id: testListIds[0],
       category: "Clothing",
       item: "socks",
-      qty: 5
+      qty: 5,
+      searched_address: "new york ny",
+      arrival_date: expect.any(Date),
+      departure_date: expect.any(Date)
     })
   })
 })
