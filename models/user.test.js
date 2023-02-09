@@ -129,8 +129,8 @@ describe("get", function () {
         {
           id: expect.any(Number),
           searched_address: 'new york ny',
-          arrival_date: expect.any(Date),
-          departure_date: expect.any(Date)
+          arrival_date: "2023-05-01",
+          departure_date: "2023-05-03"
         }
       ]
     });

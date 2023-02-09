@@ -42,8 +42,8 @@ class List {
       `SELECT username,
               id,
               searched_address,
-              arrival_date,
-              departure_date
+              TO_CHAR(arrival_date, 'YYYY-MM-DD') AS arrival_date,
+              TO_CHAR(departure_date, 'YYYY-MM-DD') AS departure_date
       FROM destination_lists
       WHERE destination_lists.id = $1`,
       [list_id]
@@ -84,7 +84,11 @@ class List {
         arrival_date, 
         departure_date) 
       VALUES ($1, $2, $3, $4)
-      RETURNING username, id, searched_address, arrival_date, departure_date`,
+      RETURNING username,
+                id,
+                searched_address,
+                TO_CHAR(arrival_date, 'YYYY-MM-DD') AS arrival_date,
+                TO_CHAR(departure_date, 'YYYY-MM-DD') AS departure_date`,
       [
         username,
         data.searched_address,
@@ -124,7 +128,11 @@ class List {
     const sqlQuery = `UPDATE destination_lists
                       SET ${setCols}
                       WHERE destination_lists.id = ${listIdIdx}
-                      RETURNING id, username, searched_address, arrival_date, departure_date`;
+                      RETURNING id,
+                                username,
+                                searched_address,
+                                TO_CHAR(arrival_date, 'YYYY-MM-DD') AS arrival_date,
+                                TO_CHAR(departure_date, 'YYYY-MM-DD') AS departure_date`;
 
     const result = await db.query(sqlQuery, [...values, list_id]);
     const updatedList = result.rows[0];

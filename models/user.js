@@ -110,7 +110,10 @@ class User {
     if (!user) throw new NotFoundError(`No user: ${username}`);
 
     const listRes = await db.query(
-      `SELECT id, searched_address, arrival_date, departure_date
+      `SELECT id, 
+              searched_address, 
+              TO_CHAR(arrival_date, 'YYYY-MM-DD') AS arrival_date,
+              TO_CHAR(departure_date, 'YYYY-MM-DD') AS departure_date
       FROM destination_lists
       WHERE username = $1
       ORDER BY arrival_date`,

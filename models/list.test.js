@@ -20,7 +20,7 @@ afterAll(commonAfterAll);
 /************************************** findAll */
 
 describe("findAll", function () {
-  test.only("works: no filter", async function () {
+  test("works: no filter", async function () {
     let lists = await List.findAll();
     expect(lists).toEqual([
       {
@@ -62,8 +62,8 @@ describe("create", function () {
     expect(list).toEqual({
       username: "u1",
       searched_address: "washington dc",
-      arrival_date: expect.any(Date),
-      departure_date: expect.any(Date),
+      arrival_date: "2023-05-01",
+      departure_date: "2023-05-03",
       id: expect.any(Number),
     });
   });
@@ -78,8 +78,8 @@ describe("get", function () {
       id: testListIds[0],
       username: "u1",
       searched_address: "new york ny",
-      arrival_date: expect.any(Date),
-      departure_date: expect.any(Date),
+      arrival_date: "2023-05-01",
+      departure_date: "2023-05-03",
       list_items: [
         {
           category: "Clothing",
@@ -130,8 +130,8 @@ describe("update", function () {
       id: testListIds[0],
       username: "u1",
       searched_address: "washington dc",
-      arrival_date: expect.any(Date),
-      departure_date: expect.any(Date)
+      arrival_date: "2023-06-01",
+      departure_date: "2023-06-03"
     });
   });
 
@@ -143,8 +143,8 @@ describe("update", function () {
       id: testListIds[0],
       username: "u1",
       searched_address: "miami fl",
-      arrival_date: expect.any(Date),
-      departure_date: expect.any(Date)
+      arrival_date: "2023-05-01",
+      departure_date: "2023-05-03"
     });
   });
 
