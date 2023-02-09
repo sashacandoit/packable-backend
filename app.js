@@ -20,8 +20,7 @@ app.get('/', function (req, res) {
   return res.send('<h1>My server does something</h1>'); 
 });
 
-/** tells routes what to prefix with -- not set up yet */
-// app.use("/users", usersRoutes);
+/** tells routes what to prefix with */
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/lists", listsRoutes);
