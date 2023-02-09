@@ -17,8 +17,8 @@ class List {
       `SELECT username,
               id,
               searched_address,
-              arrival_date,
-              departure_date
+              TO_CHAR(arrival_date, 'YYYY-MM-DD') AS arrival_date,
+              TO_CHAR(departure_date, 'YYYY-MM-DD') AS departure_date
       FROM destination_lists
       ORDER BY arrival_date`
     );

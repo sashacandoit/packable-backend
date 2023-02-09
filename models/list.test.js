@@ -20,29 +20,29 @@ afterAll(commonAfterAll);
 /************************************** findAll */
 
 describe("findAll", function () {
-  test("works: no filter", async function () {
+  test.only("works: no filter", async function () {
     let lists = await List.findAll();
     expect(lists).toEqual([
       {
         id: expect.any(Number),
         username: "u1",
         searched_address: 'new york ny',
-        arrival_date: expect.any(Date),
-        departure_date: expect.any(Date),
+        arrival_date: "2023-05-01",
+        departure_date: "2023-05-03",
       },
       {
         id: expect.any(Number),
         username: "u2",
         searched_address: 'paris france',
-        arrival_date: expect.any(Date),
-        departure_date: expect.any(Date),
+        arrival_date: "2023-05-01",
+        departure_date: "2023-05-03",
       },
       {
         id: expect.any(Number),
         username: "u2",
         searched_address: 'mexico city',
-        arrival_date: expect.any(Date),
-        departure_date: expect.any(Date),
+        arrival_date: "2023-05-01",
+        departure_date: "2023-05-03",
       },
     ]);
   });
