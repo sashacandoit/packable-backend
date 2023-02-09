@@ -9,7 +9,6 @@ const { BadRequestError } = require("../expressError");
 
 /** Routes for users.
  * Still to do:
- * add isAdmin
  * add jSON schema validator
  */
 
