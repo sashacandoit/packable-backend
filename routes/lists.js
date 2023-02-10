@@ -7,6 +7,7 @@ const ListItem = require("../models/list_item");
 const router = express.Router();
 const { ensureCorrectUser, ensureAdmin, ensureLoggedIn } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
+const {getForcast} = require("../vc_api")
 
 /** Routes for lists.
  * Still to do:
@@ -40,7 +41,13 @@ router.get("/", ensureAdmin, async function (req, res, next) {
 router.get("/:id", ensureLoggedIn, async function (req, res, next) {
   try {
     const list = await List.get(req.params.id)
-    return res.json({ list });
+    const forcastRes = await getForcast(list.arrival_date, list.departure_date, list.searched_address)
+    const listForcast = {
+      resolvedAddress: forcastRes.resolvedAddress,
+      days: forcastRes.days[0]
+    }
+    console.log(listForcast)
+    return res.json({ list, listForcast });
   } catch (err) {
     return next(err);
   }

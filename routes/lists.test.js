@@ -35,22 +35,22 @@ describe("GET /lists", function () {
           id: testListIds[0],
           username: "u1",
           searched_address: "new york ny",
-          arrival_date: "2023-05-01T04:00:00.000Z",
-          departure_date: "2023-05-03T04:00:00.000Z"
+          arrival_date: "2023-05-01",
+          departure_date: "2023-05-03"
         },
         {
           id: testListIds[1],
           username: "u1",
           searched_address: "paris france",
-          arrival_date: "2023-05-01T04:00:00.000Z",
-          departure_date: "2023-05-03T04:00:00.000Z"
+          arrival_date: "2023-05-01",
+          departure_date: "2023-05-03"
         },
         {
           id: testListIds[2],
           username: "u2",
           searched_address: "mexico city",
-          arrival_date: "2023-05-01T04:00:00.000Z",
-          departure_date: "2023-05-03T04:00:00.000Z"
+          arrival_date: "2023-05-01",
+          departure_date: "2023-05-03"
         },
       ],
     });
@@ -90,8 +90,8 @@ describe("POST /lists", function () {
         id: expect.any(Number),
         username: "u1",
         searched_address: "washington dc",
-        arrival_date: "2023-05-01T04:00:00.000Z",
-        departure_date: "2023-05-03T04:00:00.000Z"
+        arrival_date: "2023-05-01",
+        departure_date: "2023-05-03"
       },
     });
   });
@@ -112,8 +112,8 @@ describe("POST /lists", function () {
         id: expect.any(Number),
         username: "u1",
         searched_address: "washington dc",
-        arrival_date: "2023-05-01T04:00:00.000Z",
-        departure_date: "2023-05-03T04:00:00.000Z"
+        arrival_date: "2023-05-01",
+        departure_date: "2023-05-03"
       },
     });
   });
@@ -142,8 +142,8 @@ describe("get", function () {
         id: testListIds[0],
         username: "u1",
         searched_address: "new york ny",
-        arrival_date: "2023-05-01T04:00:00.000Z",
-        departure_date: "2023-05-03T04:00:00.000Z",
+        arrival_date: "2023-05-01",
+        departure_date: "2023-05-03",
         list_items: [
           {
             category: "Accessories",
@@ -161,6 +161,10 @@ describe("get", function () {
             qty: 1
           },
         ],
+      },
+      listForcast: {
+        resolvedAddress: 'New York, NY, United States',
+        days: expect.any(Object)
       }
     });
   });
@@ -174,8 +178,8 @@ describe("get", function () {
         id: testListIds[0],
         username: "u1",
         searched_address: "new york ny",
-        arrival_date: "2023-05-01T04:00:00.000Z",
-        departure_date: "2023-05-03T04:00:00.000Z",
+        arrival_date: "2023-05-01",
+        departure_date: "2023-05-03",
         list_items: [
           {
             category: "Accessories",
@@ -193,6 +197,10 @@ describe("get", function () {
             qty: 1
           },
         ],
+      },
+      listForcast: {
+        resolvedAddress: 'New York, NY, United States',
+        days: expect.any(Object)
       }
     });
   });
@@ -229,8 +237,8 @@ describe("PATCH /lists/:id", function () {
         id: testListIds[0],
         username: "u1",
         searched_address: "new york ny",
-        arrival_date: "2023-04-01T04:00:00.000Z",
-        departure_date: "2023-05-03T04:00:00.000Z"
+        arrival_date: "2023-04-01",
+        departure_date: "2023-05-03"
       }
     });
   });
@@ -247,8 +255,8 @@ describe("PATCH /lists/:id", function () {
         id: testListIds[0],
         username: "u1",
         searched_address: "new york ny",
-        arrival_date: "2023-04-01T04:00:00.000Z",
-        departure_date: "2023-05-03T04:00:00.000Z"
+        arrival_date: "2023-04-01",
+        departure_date: "2023-05-03"
       }
     });
   });

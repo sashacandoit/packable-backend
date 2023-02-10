@@ -3,6 +3,7 @@
 const db = require("../db");
 const { sqlPartialUpdate } = require("../helpers/sql-partial-update")
 const { NotFoundError } = require("../expressError");
+const VC_API_KEY = process.env.VC_API_KEY;
 
 /** Related functions for destination_lists. */
 
