@@ -8,7 +8,7 @@
 
 const formatDate = (date) => {
   let yyyy = date.getFullYear().toString();
-  let mm = date.getMonth().toString();
+  let mm = (date.getMonth() + 1).toString();
   let dd = date.getDate().toString();
 
   let mmChars = mm.split('');
@@ -34,6 +34,7 @@ const checkDate = (arrival_date, departure_date) => {
     arrival_date.setFullYear(arrival_date.getFullYear() - 1);
     departure_date.setFullYear(departure_date.getFullYear() - 1);
 
+    console.log(arrival_date)
     return {
       arrival_date: formatDate(arrival_date),
       departure_date: formatDate(departure_date)

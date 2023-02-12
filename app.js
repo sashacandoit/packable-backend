@@ -2,6 +2,7 @@
 
 /** Express app for Capston 2 project. */
 const express = require('express');
+const cors = require('cors');
 const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
 const listsRoutes = require("./routes/lists");
@@ -12,12 +13,22 @@ const { authenticateJWT } = require("./middleware/auth");
 
 const app = express();
 
+app.use(cors({
+  origin: "http://localhost:3000"
+}))
+ 
 app.use(express.json());
 app.use(authenticateJWT);
 
+app.get('/cors', (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  return res.send({ "msg": "This has CORS enabled 🎈" });
+})
+
 app.get('/', function (req, res) {
+  res.set('Access-Control-Allow-Origin', '*');
   console.log('Server is working')
-  return res.send('<h1>My server does something</h1>'); 
+  return res.send({ "msg": "This has CORS enabled 🎈" });
 });
 
 /** tells routes what to prefix with */

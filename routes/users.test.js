@@ -197,14 +197,14 @@ describe("GET /users/:username", function () {
           [{
             id: expect.any(Number),
             searched_address: "new york ny",
-            arrival_date: "2023-05-01T04:00:00.000Z",
-            departure_date: "2023-05-03T04:00:00.000Z"
+            arrival_date: "2023-05-01",
+            departure_date: "2023-05-03"
           },
           {
             id: expect.any(Number),
             searched_address: "paris france",
-            arrival_date: "2023-05-01T04:00:00.000Z",
-            departure_date: "2023-05-03T04:00:00.000Z"
+            arrival_date: "2023-05-01",
+            departure_date: "2023-05-03"
           }]
       },
     });
@@ -225,14 +225,14 @@ describe("GET /users/:username", function () {
           [{
             id: expect.any(Number),
             searched_address: "new york ny",
-            arrival_date: "2023-05-01T04:00:00.000Z",
-            departure_date: "2023-05-03T04:00:00.000Z"
+            arrival_date: "2023-05-01",
+            departure_date: "2023-05-03"
           },
           {
             id: expect.any(Number),
             searched_address: "paris france",
-            arrival_date: "2023-05-01T04:00:00.000Z",
-            departure_date: "2023-05-03T04:00:00.000Z"
+            arrival_date: "2023-05-01",
+            departure_date: "2023-05-03"
           }],
       },
     });
