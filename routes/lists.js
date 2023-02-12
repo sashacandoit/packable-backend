@@ -40,14 +40,14 @@ router.get("/", ensureAdmin, async function (req, res, next) {
 
 router.get("/:id", ensureLoggedIn, async function (req, res, next) {
   try {
-    const list = await List.get(req.params.id)
-    const forcastRes = await getForcast(list.arrival_date, list.departure_date, list.searched_address)
-    const listForcast = {
+    const listRes = await List.get(req.params.id)
+    const forcastRes = await getForcast(listRes.arrival_date, listRes.departure_date, listRes.searched_address)
+    const list = {
+      ...listRes, 
       resolvedAddress: forcastRes.resolvedAddress,
       days: forcastRes.days[0]
     }
-    console.log(listForcast)
-    return res.json({ list, listForcast });
+    return res.json({ list });
   } catch (err) {
     return next(err);
   }
