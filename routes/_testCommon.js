@@ -51,22 +51,19 @@ async function commonBeforeAll() {
   
   
   testListItemIds[0] = (await ListItem.create(
-    {
-      list_id: testListIds[0],
+    testListIds[0], {
       category: "Accessories",
       item: "sunglasses",
       qty: 1
     })).id;
   testListItemIds[1] = (await ListItem.create(
-    {
-      list_id: testListIds[0],
+    testListIds[0], {
       category: "Clothing",
       item: "socks",
       qty: 4
     })).id;
   testListItemIds[2] = (await ListItem.create(
-    {
-      list_id: testListIds[0],
+    testListIds[0], {
       category: "Documents",
       item: "passport",
       qty: 1

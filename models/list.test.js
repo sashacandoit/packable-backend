@@ -82,21 +82,25 @@ describe("get", function () {
       departure_date: "2023-05-03",
       list_items: [
         {
+          id: expect.any(Number),
           category: "Clothing",
           item: "socks",
           qty: 5
         },
         {
+          id: expect.any(Number),
           category: "Footware",
           item: "dress shoes",
           qty: 1
         },
         {
+          id: expect.any(Number),
           category: "Accessories",
           item: "sunglasses",
           qty: 1
         },
         {
+          id: expect.any(Number),
           category: "Clothing",
           item: "pajamas",
           qty: 2

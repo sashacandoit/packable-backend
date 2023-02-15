@@ -95,7 +95,7 @@ class ListItem {
    *
    **/
 
-  static async create(data) {
+  static async create(list_id, data) {
     const res = await db.query(
       `INSERT INTO list_items 
               (list_id,
@@ -105,7 +105,7 @@ class ListItem {
       VALUES ($1, $2, $3, $4)
       RETURNING id, list_id, category, item, qty`,
       [
-        data.list_id,
+        list_id,
         data.category,
         data.item,
         data.qty

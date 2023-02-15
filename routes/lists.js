@@ -105,6 +105,18 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
 })
 
 
+router.post("/:id/items", ensureLoggedIn, async function (req, res, next) {
+  try {
+    const currUser = res.locals.user
+    const item = await ListItem.create(req.params.id, req.body, (currUser.is_admin ? req.body.username : currUser.username))
+
+    return res.status(201).json({ item });
+  } catch (err) {
+    return next(err)
+  }
+})
+
+
 /** PATCH /[list_id]  { fld1, fld2, ... } => { list }
  *
  * Data can include: { searched_address, arrival_date, departure_date }

@@ -130,6 +130,65 @@ describe("POST /lists", function () {
   });
 })
 
+
+/************************************** POST /lists/:id/items */
+
+describe("POST /lists/:id/items", function () {
+  console.log(adminToken)
+  test("ok for admin", async function () {
+    const resp = await request(app)
+      .post(`/lists/${testListIds[0]}/items`)
+      .send({
+        category: "Clothing",
+        item: "swimsuit",
+        qty: 1
+      })
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.statusCode).toEqual(201);
+    expect(resp.body).toEqual({
+      item: {
+        id: expect.any(Number),
+        list_id: testListIds[0],
+        category: "Clothing",
+        item: "swimsuit",
+        qty: 1
+      },
+    });
+  });
+
+  test("ok for same user", async function () {
+    const resp = await request(app)
+      .post(`/lists/${testListIds[0]}/items`)
+      .send({
+        category: "Clothing",
+        item: "swimsuit",
+        qty: 1
+      }, "u1")
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.statusCode).toEqual(201);
+    expect(resp.body).toEqual({
+      item: {
+        id: expect.any(Number),
+        list_id: testListIds[0],
+        category: "Clothing",
+        item: "swimsuit",
+        qty: 1
+      },
+    });
+  });
+
+  test("unauth anon", async function () {
+    const resp = await request(app)
+      .post(`/lists/${testListIds[0]}/items`)
+      .send({
+        category: "Clothing",
+        item: "swimsuit",
+        qty: 1
+      })
+    expect(resp.statusCode).toEqual(401);
+  });
+})
+
 /************************************** get */
 
 describe("get /lists/:id", function () {
@@ -354,7 +413,7 @@ describe("PATCH /lists/:id", function () {
     try {
       const resp = await request(app)
         .patch(`/lists/0`)
-        .send({arrival_date: "2023-04-01"})
+        .send({ arrival_date: "2023-04-01" })
         .set("authorization", `Bearer ${adminToken}`);
     } catch (err) {
       expect(err instanceof NotFoundError).toBeTruthy();

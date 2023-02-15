@@ -114,8 +114,8 @@ describe("create", function () {
 
   test("works", async function () {
     let listItem = await ListItem.create(
+      testListIds[0],
       {
-        list_id: testListIds[0],
         category: "Documents",
         item: "passport",
         qty: 1
