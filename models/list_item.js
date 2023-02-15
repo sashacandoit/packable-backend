@@ -7,24 +7,49 @@ const { NotFoundError } = require("../expressError");
 /** Related functions for list_items. */
 
 class ListItem {
-  /** Find all items by given list_id.
+
+  /** Find all items.
   * Returns [{ list_id, id, category, item, qty }, ...]
   **/
   static async findAll() {
     const res = await db.query(
-      `SELECT id,
-              list_id,
-              category,
-              item,
-              qty
+      `SELECT list_items.id,
+      list_items.list_id,
+      list_items.category,
+      list_items.item,
+      list_items.qty
       FROM list_items
-      ORDER BY list_items.category`
+      LEFT JOIN destination_lists ON destination_lists.id = list_items.list_id`
+    );
+    const listItems = res.rows;
+
+    if (!listItems) {
+      console.log('No Items Found')
+      throw new NotFoundError('No Items Found')
+    };
+
+    return listItems;
+  }
+
+  /** Find all items by given list_id.
+  * Returns [{ list_id, id, category, item, qty }, ...]
+  **/
+  static async findAllForList(list_id) {
+    const res = await db.query(
+      `SELECT list_items.id,
+      list_items.list_id,
+      list_items.category,
+      list_items.item,
+      list_items.qty
+      FROM list_items
+      LEFT JOIN destination_lists ON destination_lists.id = list_items.list_id
+      WHERE list_items.list_id = $1`, [list_id]
     );
     const listItems = res.rows;
 
     if (!listItems) {
       console.log('No Items Added To List Yet')
-      throw new NotFoundError('No Items Added To List Yet')
+      // throw new NotFoundError('No Items Added To List Yet')
     };
 
     return listItems;
@@ -112,6 +137,7 @@ class ListItem {
       });
 
     const listItemIdIdx = "$" + (values.length + 1);
+    console.log("list item index -", listItemIdIdx)
 
     const sqlQuery = `UPDATE list_items
                       SET ${setCols}

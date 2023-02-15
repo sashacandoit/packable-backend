@@ -132,7 +132,7 @@ describe("POST /lists", function () {
 
 /************************************** get */
 
-describe("get", function () {
+describe("get /lists/:id", function () {
   test("works for same user", async function () {
     const resp = await request(app)
       .get(`/lists/${testListIds[0]}`)
@@ -148,23 +148,22 @@ describe("get", function () {
           {
             category: "Accessories",
             item: "sunglasses",
-            qty: 1
+            qty: 1,
+            id: expect.any(Number)
           },
           {
             category: "Clothing",
             item: "socks",
-            qty: 4
+            qty: 4,
+            id: expect.any(Number)
           },
           {
             category: "Documents",
             item: "passport",
-            qty: 1
+            qty: 1,
+            id: expect.any(Number)
           },
         ],
-      },
-      listForcast: {
-        resolvedAddress: 'New York, NY, United States',
-        days: expect.any(Object)
       }
     });
   });
@@ -184,23 +183,22 @@ describe("get", function () {
           {
             category: "Accessories",
             item: "sunglasses",
-            qty: 1
+            qty: 1,
+            id: expect.any(Number)
           },
           {
             category: "Clothing",
             item: "socks",
-            qty: 4
+            qty: 4,
+            id: expect.any(Number)
           },
           {
             category: "Documents",
             item: "passport",
-            qty: 1
+            qty: 1,
+            id: expect.any(Number)
           },
         ],
-      },
-      listForcast: {
-        resolvedAddress: 'New York, NY, United States',
-        days: expect.any(Object)
       }
     });
   });
@@ -221,6 +219,90 @@ describe("get", function () {
     expect(resp.statusCode).toEqual(401);
   });
 });
+
+
+/************************************** get list items */
+
+describe("get /lists/:id/lists", function () {
+  test("works for same user", async function () {
+    const resp = await request(app)
+      .get(`/lists/${testListIds[0]}/items`)
+      .set("authorization", `Bearer ${u1Token}`);
+    expect(resp.body).toEqual({
+      items: [
+        {
+          list_id: testListIds[0],
+          category: "Accessories",
+          item: "sunglasses",
+          qty: 1,
+          id: expect.any(Number)
+        },
+        {
+          list_id: testListIds[0],
+          category: "Clothing",
+          item: "socks",
+          qty: 4,
+          id: expect.any(Number)
+        },
+        {
+          list_id: testListIds[0],
+          category: "Documents",
+          item: "passport",
+          qty: 1,
+          id: expect.any(Number)
+        },
+      ],
+    });
+  });
+
+  test("works", async function () {
+    const resp = await request(app)
+      .get(`/lists/${testListIds[0]}/items`)
+      .set("authorization", `Bearer ${adminToken}`);
+    expect(resp.body).toEqual({
+      items: [
+        {
+          list_id: testListIds[0],
+          category: "Accessories",
+          item: "sunglasses",
+          qty: 1,
+          id: expect.any(Number)
+        },
+        {
+          list_id: testListIds[0],
+          category: "Clothing",
+          item: "socks",
+          qty: 4,
+          id: expect.any(Number)
+        },
+        {
+          list_id: testListIds[0],
+          category: "Documents",
+          item: "passport",
+          qty: 1,
+          id: expect.any(Number)
+        },
+      ]
+    });
+  });
+
+  test("not found if no such list", async function () {
+    try {
+      const resp = await request(app)
+        .get(`/lists/0/items`)
+        .set("authorization", `Bearer ${adminToken}`);
+    } catch (err) {
+      expect(err instanceof NotFoundError).toBeTruthy();
+    }
+  });
+
+  test("unauth for anon", async function () {
+    const resp = await request(app)
+      .get(`/lists/${testListIds[0]}`)
+    expect(resp.statusCode).toEqual(401);
+  });
+});
+
 
 /************************************** PATCH /lists/:id */
 

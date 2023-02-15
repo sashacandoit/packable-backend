@@ -60,9 +60,10 @@ class List {
     const listItemsRes = await db.query(
       `SELECT list_items.category,
               list_items.item,
-              list_items.qty
+              list_items.qty,
+              list_items.id
         FROM list_items
-        WHERE list_id =$1`,
+        WHERE list_id=$1`,
       [list_id]
     )
 

@@ -19,9 +19,23 @@ afterAll(commonAfterAll);
 /************************************** findAll */
 
 describe("findAll", function () {
-  test("works: no filter", async function () {
-    let listItems = await ListItem.findAll(testListIds[0]);
+  test("works", async function () {
+    let listItems = await ListItem.findAll();
     expect(listItems).toEqual([
+      {
+        id: expect.any(Number),
+        list_id: testListIds[0],
+        category: "Clothing",
+        item: "socks",
+        qty: 5
+      },
+      {
+        id: expect.any(Number),
+        list_id: testListIds[0],
+        category: "Footware",
+        item: "dress shoes",
+        qty: 1
+      },
       {
         id: expect.any(Number),
         list_id: testListIds[0],
@@ -33,15 +47,25 @@ describe("findAll", function () {
         id: expect.any(Number),
         list_id: testListIds[0],
         category: "Clothing",
-        item: "socks",
-        qty: 5
-      },
+        item: "pajamas",
+        qty: 2
+      }
+    ]);
+  });
+});
+
+/************************************** findAll by ListId */
+
+describe("findAll by ListId", function () {
+  test("works", async function () {
+    let listItems = await ListItem.findAllForList(testListIds[0]);
+    expect(listItems).toEqual([
       {
         id: expect.any(Number),
         list_id: testListIds[0],
         category: "Clothing",
-        item: "pajamas",
-        qty: 2
+        item: "socks",
+        qty: 5
       },
       {
         id: expect.any(Number),
@@ -49,6 +73,20 @@ describe("findAll", function () {
         category: "Footware",
         item: "dress shoes",
         qty: 1
+      },
+      {
+        id: expect.any(Number),
+        list_id: testListIds[0],
+        category: "Accessories",
+        item: "sunglasses",
+        qty: 1
+      },
+      {
+        id: expect.any(Number),
+        list_id: testListIds[0],
+        category: "Clothing",
+        item: "pajamas",
+        qty: 2
       }
     ]);
   });

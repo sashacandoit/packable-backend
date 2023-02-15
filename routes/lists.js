@@ -40,14 +40,43 @@ router.get("/", ensureAdmin, async function (req, res, next) {
 
 router.get("/:id", ensureLoggedIn, async function (req, res, next) {
   try {
-    const listRes = await List.get(req.params.id)
-    const forcastRes = await getForcast(listRes.arrival_date, listRes.departure_date, listRes.searched_address)
-    const list = {
-      ...listRes, 
-      resolvedAddress: forcastRes.resolvedAddress,
-      days: forcastRes.days[0]
-    }
+    const list = await List.get(req.params.id)
     return res.json({ list });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+
+/** GET /[list_id] / forcast => { list }
+ *
+ * Returns { list_id, resolvedAddress, days }
+ *   where list_items is { category, item, qty }
+ *
+ * Authorization required: must be logged in
+ */
+
+router.get("/:id/forcast", ensureLoggedIn, async function (req, res, next) {
+  try {
+    const listRes = await List.get(req.params.id)
+    const forcast = await getForcast(listRes.arrival_date, listRes.departure_date, listRes.searched_address)
+    return res.json({ forcast });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+/** GET /[list_id] / list_items => { list_items }
+ *
+ * Returns list: [{ list_id, category, item, qty },...]
+ *
+ * Authorization required: must be logged in
+ */
+
+router.get("/:id/items", ensureLoggedIn, async function (req, res, next) {
+  try {
+    const items = await ListItem.findAllForList(req.params.id)
+    return res.json({ items });
   } catch (err) {
     return next(err);
   }
@@ -68,14 +97,8 @@ router.post("/", ensureLoggedIn, async function (req, res, next) {
   try {
     const currUser = res.locals.user
     const list = await List.create(req.body, (currUser.is_admin ? req.body.username : currUser.username))
-    const forcastRes = await getForcast(list.arrival_date, list.departure_date, list.searched_address)
-    const listForcast = {
-      resolvedAddress: forcastRes.resolvedAddress,
-      days: forcastRes.days[0]
-    }
-    console.log(listForcast)
-    console.log(list)
-    return res.status(201).json({ list, listForcast });
+
+    return res.status(201).json({ list });
   } catch (err) {
     return next (err)
   }
