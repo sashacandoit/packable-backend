@@ -4,6 +4,10 @@
 
 When planning for a trip, travelers often struggle to pack for destinations when they aren't familiar with the location's climate. Also most people over-pack for trips, not knowing how many articles of clothing they actually need. The goal of packable is to take the guesswork out of the packing experience. By pulling for a locations past weather data, a user can enter their trip dates and destination, and see likely weather conditions for when they will be there. Further, the app will generate a template packing list based on the number of days the user will be traveling and the climate of their destination. The packing list can then be edited and saved to there user profile. 
 
+This Repository holds all of the files and requirements for the Packable backend.
+
+The repository for the Packable frontend UI can be accessed [here](https://github.com/sashacandoit/capstone-2-frontend.git)
+
 ------
 
 #### Packable API
@@ -133,6 +137,32 @@ JSON Web Tokens are used to encode and store logged in user data:
 
 ------
 
+#### Testing
+
+Unit tests are included that tst the behavior of the API's data models ()User, List, and List Items) by using mock data to make test SQL queries to the test database, and checking the returned data. Endpoints tested for each model include:
+
+* `findAll`
+* `get(id)`
+* `create`
+* `update`
+* `remove`
+
+Additional endpoints for lists include `findAllForList(id)` which returns all list items by list id.
+
+Additonal endpoints for User models include `register ` and `authenticate`
+
+Route testing is included for all routes as well, testing how the API handles incoming requests and responses that it sends to the frontend. Standard RESTful API endpoints are tested for Users, Lists, and ListItems:
+
+* `GET`
+* `GET(id)`
+* `POST`
+* `PATCH`
+* `DELETE`
+
+Basic tests for middleware, helper functions, authentication, and app configuration also included. 
+
+------
+
 #### Improvements to be made
 
 All restful API points work for users, lists and list items but not all are implemented in the front end.
@@ -149,3 +179,5 @@ Authentication for removing (DELETE) a list currently allows any user to delete 
 List items are currently all being added, updated, and removed on the frontend and not connected to database. The way the current frontend is structured, API calls will have to be made with each list item edit as well as each addition and deletion to list. 
 
 JSON Schema validation still needs to be added for all POST and PATCH requests to users, lists and list items. 
+
+Additional testing could be added for helper functions, but all have at least one test that pass for now. 
