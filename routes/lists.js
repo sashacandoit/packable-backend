@@ -5,8 +5,7 @@ const List = require("../models/list");
 const ListItem = require("../models/list_item");
 
 const router = express.Router();
-const { ensureCorrectUser, ensureAdmin, ensureLoggedIn } = require("../middleware/auth");
-const { BadRequestError } = require("../expressError");
+const { ensureCorrectUser, ensureAdmin, ensureLoggedIn, ensureListOfUser } = require("../middleware/auth");
 const {getForcast} = require("../vc_api")
 
 /** Routes for lists.
@@ -117,14 +116,6 @@ router.post("/:id/items", ensureLoggedIn, async function (req, res, next) {
 })
 
 
-/** PATCH /[list_id]  { fld1, fld2, ... } => { list }
- *
- * Data can include: { searched_address, arrival_date, departure_date }
- *
- * Returns { username, id, searched_address, arrival_date, departure_date, list_items }
- *
- * Authorization required: current user
- */
 
 router.patch("/:id", ensureLoggedIn, async function (req, res, next) {
   try {
@@ -142,7 +133,7 @@ router.patch("/:id", ensureLoggedIn, async function (req, res, next) {
  * Authorization required: current user
  **/
 
-router.delete("/:id", ensureCorrectUser, async function (req, res, next) {
+router.delete("/:id", ensureLoggedIn, async function (req, res, next) {
   try {
     await List.remove(req.params.id)
     return res.json({ deleted: req.params.id });
