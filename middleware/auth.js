@@ -35,7 +35,9 @@ function authenticateJWT(req, res, next) {
 
 function ensureLoggedIn(req, res, next) {
   try {
-    if (!res.locals.user) throw new UnauthorizedError();
+    const user = res.locals.user;
+    console.log(user)
+    if (!user) throw new UnauthorizedError();
     return next();
   } catch (err) {
     return next(err);
@@ -68,12 +70,8 @@ function ensureCorrectUser(req, res, next) {
 // function ensureListOfUser(req, res, next) {
 //   try {
 //     const user = res.locals.user;
-//     const userLists = []
-//     for (list in user.lists) {
-//       userLists.push(list.id)
-//     }
 //     const list = req.params.id;
-//     if (!(user && (user.is_admin || userLists.includes(list)))) {
+//     if (!(user && (user.is_admin  || list.username===user.username))) {
 //       throw new UnauthorizedError();
 //     }
 //     return next();
@@ -81,19 +79,6 @@ function ensureCorrectUser(req, res, next) {
 //     return next(err);
 //   }
 // }
-
-function ensureListOfUser(req, res, next) {
-  try {
-    const user = res.locals.user;
-    const list = req.params.id;
-    if (!(user && (user.is_admin  || list.username===user.username))) {
-      throw new UnauthorizedError();
-    }
-    return next();
-  } catch (err) {
-    return next(err);
-  }
-}
 
 /** Middleware to use when they must be logged in as an admin user.
  *
@@ -117,6 +102,5 @@ module.exports = {
   authenticateJWT,
   ensureLoggedIn,
   ensureCorrectUser,
-  ensureAdmin,
-  ensureListOfUser
+  ensureAdmin
 };

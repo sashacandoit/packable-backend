@@ -28,7 +28,7 @@ app.get('/cors', (req, res) => {
 app.get('/', function (req, res) {
   res.set('Access-Control-Allow-Origin', '*');
   console.log('Server is working')
-  return res.send({ "msg": "This has CORS enabled 🎈" });
+  return res.send({ "msg": "This has CORS enabled" });
 });
 
 /** tells routes what to prefix with */

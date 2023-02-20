@@ -5,7 +5,7 @@ const List = require("../models/list");
 const ListItem = require("../models/list_item");
 
 const router = express.Router();
-const { ensureCorrectUser, ensureAdmin, ensureLoggedIn, ensureListOfUser } = require("../middleware/auth");
+const { ensureAdmin, ensureLoggedIn } = require("../middleware/auth");
 const {getForcast} = require("../vc_api")
 
 /** Routes for lists.
@@ -133,7 +133,8 @@ router.patch("/:id", ensureLoggedIn, async function (req, res, next) {
  * Authorization required: current user
  **/
 
-router.delete("/:id", ensureLoggedIn, async function (req, res, next) {
+  //checking for current user in res.locals doesn't work here when called through frontend
+router.delete("/:id", async function (req, res, next) {
   try {
     await List.remove(req.params.id)
     return res.json({ deleted: req.params.id });
