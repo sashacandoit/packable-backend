@@ -5,7 +5,7 @@ const User = require("../models/user");
 const List = require("../models/list");
 const ListItem = require("../models/list_item");
 
-const { createToken } = require("../middleware/tokens");
+const { createToken } = require("../helpers/tokens");
 
 const testListIds = []
 const testListItemIds = []
