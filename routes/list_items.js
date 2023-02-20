@@ -2,8 +2,7 @@ const express = require("express");
 const ListItem = require("../models/list_item");
 
 const router = express.Router();
-const { ensureCorrectUser, ensureAdmin, ensureLoggedIn } = require("../middleware/auth");
-const { BadRequestError } = require("../expressError");
+const { ensureLoggedIn } = require("../middleware/auth");
 
 /** Routes for list Items.
  * Still to do:

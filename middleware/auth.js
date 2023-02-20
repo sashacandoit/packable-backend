@@ -67,18 +67,18 @@ function ensureCorrectUser(req, res, next) {
  *  If not, raises Unauthorized.
  */
 
-// function ensureListOfUser(req, res, next) {
-//   try {
-//     const user = res.locals.user;
-//     const list = req.params.id;
-//     if (!(user && (user.is_admin  || list.username===user.username))) {
-//       throw new UnauthorizedError();
-//     }
-//     return next();
-//   } catch (err) {
-//     return next(err);
-//   }
-// }
+function ensureListOfUser(req, res, next) {
+  try {
+    const user = res.locals.user;
+    const list = req.params.id;
+    if (!(user && (user.is_admin  || list.username===user.username))) {
+      throw new UnauthorizedError();
+    }
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+}
 
 /** Middleware to use when they must be logged in as an admin user.
  *

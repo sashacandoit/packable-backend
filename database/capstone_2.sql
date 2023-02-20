@@ -1,3 +1,5 @@
+-- Run this file with psql to drop and create new databases and tables for app
+
 \echo 'Delete and recreate capstone_2 db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
 

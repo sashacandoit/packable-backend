@@ -2,10 +2,9 @@
 
 const express = require("express");
 const User = require("../models/user");
-const { createToken } = require("../middleware/tokens");
+const { createToken } = require("../helpers/tokens");
 const router = express.Router();
 const { ensureCorrectUser, ensureAdmin } = require("../middleware/auth");
-const { BadRequestError } = require("../expressError");
 
 /** Routes for users.
  * Still to do:
