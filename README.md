@@ -178,6 +178,11 @@ Authentication for removing (DELETE) a list currently allows any user to delete 
 
 List items are currently all being added, updated, and removed on the frontend and not connected to database. The way the current frontend is structured, API calls will have to be made with each list item edit as well as each addition and deletion to list. 
 
+Routes will need to include username so only lists belonging to each user can be accessed:
+
+- `/lists` => `/:username/lists`
+- `/lists/:list_id` => `/:username/lists/:list_id`
+
 JSON Schema validation still needs to be added for all POST and PATCH requests to users, lists and list items. 
 
 Additional testing could be added for helper functions, but all have at least one test that pass for now. 
